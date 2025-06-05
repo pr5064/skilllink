@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BridgeVolt Map View</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body, html {
+      margin: 0;
+      height: 100%;
+    }
+
+    #map {
+      height: 100%;
+      width: 100%;
+    }
+
+    .legend {
+      background: white;
+      padding: 10px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Initial Map Settings
+    const map = L.map('map').setView([17.385044, 78.486671], 15); // Example: Hyderabad bridge location
+
+    // Base Layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18
+    }).addTo(map);
+
+    // Bridge marker
+    const bridgeMarker = L.marker([17.385044, 78.486671]).addTo(map)
+      .bindPopup('Bridge Location<br>Traffic-powered energy system.')
+      .openPopup();
+
+    // Simulate Traffic Density Zones
+    const trafficZones = [
+      { lat: 17.386, lng: 78.486, level: 'low' },
+      { lat: 17.384, lng: 78.487, level: 'medium' },
+      { lat: 17.383, lng: 78.485, level: 'high' }
+    ];
+
+    trafficZones.forEach(zone => {
+      let color = zone.level === 'low' ? 'green' : zone.level === 'medium' ? 'orange' : 'red';
+      L.circle([zone.lat, zone.lng], {
+        color: color,
+        fillColor: color,
+        fillOpacity: 0.5,
+        radius: 100
+      }).addTo(map).bindPopup(`Traffic Level: ${zone.level}`);
+    });
+
+    // Optional: Legend
+    const legend = L.control({ position: 'bottomright' });
+    legend.onAdd = function () {
+      const div = L.DomUtil.create('div', 'legend');
+      div.innerHTML = `
+        <strong>Traffic Density</strong><br/>
+        <span style="color:green;">●</span> Low<br/>
+        <span style="color:orange;">●</span> Medium<br/>
+        <span style="color:red;">●</span> High
+      `;
+      return div;
+    };
+    legend.addTo(map);
+  </script>
+</body>
+</html>

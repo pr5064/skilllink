@@ -224,16 +224,25 @@
     let sensors = 0;
 
     function updateValues() {
+      // Simulate power generated per second (between ~0.0003 to 0.0008 kWh)
       let powerGenerated = (Math.random() * 2 + 1) / 3600;
       generated += powerGenerated;
-      lights += powerGenerated * 0.4;
-      cctv += powerGenerated * 0.3;
-      sensors += powerGenerated * 0.2;
+
+      // Allocate generated power to devices
+      let deltaLights = powerGenerated * 0.4;
+      let deltaCctv = powerGenerated * 0.3;
+      let deltaSensors = powerGenerated * 0.2;
+
+      lights += deltaLights;
+      cctv += deltaCctv;
+      sensors += deltaSensors;
+
       used = lights + cctv + sensors;
 
       let saved = generated - used;
       if (saved < 0) saved = 0;
 
+      // Update DOM
       document.getElementById("generated").textContent = generated.toFixed(2);
       document.getElementById("used").textContent = used.toFixed(2);
       document.getElementById("saved").textContent = saved.toFixed(2);
@@ -264,4 +273,22 @@
 
       const required = (streetlights * 0.05) + (cctvs * 0.03) + (sensorUnits * 0.02);
       const saved = generated - used;
-      const result = document.getElementById
+      const result = document.getElementById("allocationResult");
+
+      if (required <= saved) {
+        used += required;
+        document.getElementById("used").textContent = used.toFixed(2);
+        document.getElementById("saved").textContent = (generated - used).toFixed(2);
+        result.textContent = "✅ Energy successfully allocated!";
+        result.style.color = "#58a6ff";
+      } else {
+        result.textContent = "❌ Not enough saved energy. Please generate more.";
+        result.style.color = "#f85149";
+      }
+    }
+
+    // Update values every second to simulate real-time data
+    setInterval(updateValues, 1000);
+  </script>
+</body>
+</html>
