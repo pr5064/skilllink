@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BridgeVolt Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>⚡ BridgeVolt Dashb</h1>
+    <p>Monitoring Real-Time Power from Traffic</p>
+  </header>
+
+  <main class="dashboard">
+    <div class="card generated">
+      <h2>Total Generated</h2>
+      <p><span id="generated">0.00</span> kWh</p>
+    </div>
+
+    <div class="card used">
+      <h2>Energy Used</h2>
+      <p><span id="used">0.00</span> kWh</p>
+    </div>
+
+    <div class="card saved">
+      <h2>Energy Saved</h2>
+      <p><span id="saved">0.00</span> kWh</p>
+    </div>
+  </main>
+
+  <section class="breakdown">
+    <h2>Usage Breakdown</h2>
+    <ul>
+      <li>Street Lights: <span id="lights">0.00</span> kWh</li>
+      <li>CCTV Cameras: <span id="cctv">0.00</span> kWh</li>
+      <li>Sensors: <span id="sensors">0.00</span> kWh</li>
+    </ul>
+  </section>
+
+  <section class="info">
+    <h2>Saved Energy Usage Suggestion</h2>
+    <p id="suggestion">Loading...</p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

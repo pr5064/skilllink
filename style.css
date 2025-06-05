@@ -1,0 +1,81 @@
+body {
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  background-color: #0d1117;
+  color: #f0f6fc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  color: #58a6ff;
+}
+
+header p {
+  font-size: 1rem;
+  color: #8b949e;
+}
+
+.dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.card {
+  background-color: #161b22;
+  border: 2px solid #30363d;
+  padding: 20px 30px;
+  border-radius: 15px;
+  width: 250px;
+  text-align: center;
+  box-shadow: 0 0 10px #58a6ff55;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card h2 {
+  font-size: 1.2rem;
+  color: #79c0ff;
+}
+
+.card p {
+  font-size: 2rem;
+  margin: 10px 0 0;
+}
+
+.breakdown, .info {
+  max-width: 600px;
+  background-color: #161b22;
+  border: 2px solid #30363d;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 15px;
+}
+
+.breakdown h2, .info h2 {
+  color: #58a6ff;
+}
+
+.breakdown ul {
+  list-style: none;
+  padding: 0;
+}
+
+.breakdown li {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
