@@ -6,8 +6,6 @@
   <title>BridgeVolt Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
   <style>
-    /* === CSS === */
-
     body {
       margin: 0;
       font-family: 'Orbitron', sans-serif;
@@ -42,7 +40,7 @@
       flex-wrap: wrap;
       gap: 20px;
       justify-content: center;
-      margin-bottom: 15px;
+      margin-bottom: 30px;
       width: 100%;
       max-width: 900px;
     }
@@ -56,7 +54,6 @@
       text-align: center;
       box-shadow: 0 0 15px #58a6ff55;
       transition: transform 0.2s ease;
-      user-select: none;
     }
 
     .card:hover {
@@ -76,59 +73,30 @@
       letter-spacing: 1px;
     }
 
-    .breakdown {
-      max-width: 600px;
+    .breakdown, .energy-allocation, .suggestions {
       background-color: #161b22;
       border: 2px solid #30363d;
-      padding: 20px;
+      padding: 20px 30px;
       border-radius: 15px;
-      color: #79c0ff;
-      font-size: 1.15rem;
       width: 100%;
       max-width: 600px;
-      margin-bottom: 20px;
-      user-select: none;
+      margin-bottom: 30px;
     }
 
-    .breakdown h2 {
+    .breakdown h2, .energy-allocation h2, .suggestions h2 {
       color: #58a6ff;
-      margin-top: 0;
       margin-bottom: 15px;
       font-size: 1.8rem;
     }
 
     .breakdown ul {
       list-style: none;
-      padding-left: 0;
-      margin: 0;
+      padding: 0;
     }
 
     .breakdown li {
-      margin-bottom: 10px;
-    }
-
-    /* === Energy Allocation Form === */
-
-    .energy-allocation {
-      max-width: 600px;
-      background-color: #161b22;
-      border: 2px solid #30363d;
-      padding: 25px 30px;
-      border-radius: 15px;
-      width: 100%;
-      color: #79c0ff;
       font-size: 1.1rem;
-      box-shadow: 0 0 20px #58a6ff44;
-      user-select: none;
-      margin-bottom: 30px;
-    }
-
-    .energy-allocation h2 {
-      color: #58a6ff;
-      margin-top: 0;
-      margin-bottom: 20px;
-      font-size: 2rem;
-      text-align: center;
+      margin-bottom: 10px;
     }
 
     .energy-allocation label {
@@ -145,30 +113,24 @@
       border: 1px solid #30363d;
       background-color: #0d1117;
       color: #f0f6fc;
-      font-family: 'Orbitron', monospace;
       text-align: right;
-      transition: border-color 0.3s ease;
     }
 
-    .energy-allocation input[type=number]:focus {
+    .energy-allocation input:focus {
       outline: none;
       border-color: #58a6ff;
     }
 
     .energy-allocation button {
       display: block;
-      margin: 20px auto 0 auto;
+      margin: 20px auto 0;
       padding: 12px 30px;
       border: none;
       border-radius: 10px;
       background-color: #238636;
       color: white;
-      font-weight: 700;
-      font-family: 'Orbitron', monospace;
-      font-size: 1.1rem;
+      font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-      user-select: none;
     }
 
     .energy-allocation button:hover {
@@ -177,27 +139,15 @@
 
     #allocationResult {
       margin-top: 20px;
-      font-weight: 700;
       font-size: 1.15rem;
-      min-height: 24px;
       text-align: center;
-      user-select: text;
     }
 
-    /* Real-time suggestion box below saved energy */
-
-    #suggestionBox {
-      max-width: 600px;
-      background-color: #21262d;
-      border: 2px solid #30363d;
-      padding: 15px 20px;
-      border-radius: 15px;
-      color: #79c0ff;
+    .suggestions p {
       font-size: 1.1rem;
+      color: #9ecbff;
       text-align: center;
-      margin-bottom: 30px;
-      box-shadow: 0 0 15px #58a6ff55;
-      user-select: none;
+      min-height: 40px;
     }
 
     @media (max-width: 700px) {
@@ -205,20 +155,7 @@
         flex-direction: column;
         align-items: center;
       }
-
-      .card {
-        width: 90%;
-      }
-
-      .energy-allocation {
-        width: 90%;
-      }
-
-      .breakdown {
-        width: 90%;
-      }
-
-      #suggestionBox {
+      .card, .breakdown, .energy-allocation, .suggestions {
         width: 90%;
       }
     }
@@ -230,28 +167,22 @@
     <p>Monitoring Real-Time Power from Traffic</p>
   </header>
 
-  <main class="dashboard" aria-label="Dashboard summary">
-    <div class="card generated" aria-live="polite">
+  <main class="dashboard">
+    <div class="card">
       <h2>Total Generated</h2>
       <p><span id="generated">0.00</span> kWh</p>
     </div>
-
-    <div class="card used" aria-live="polite">
+    <div class="card">
       <h2>Energy Used</h2>
       <p><span id="used">0.00</span> kWh</p>
     </div>
-
-    <div class="card saved" aria-live="polite">
+    <div class="card">
       <h2>Energy Saved</h2>
       <p><span id="saved">0.00</span> kWh</p>
     </div>
   </main>
 
-  <section id="suggestionBox" aria-live="polite" aria-atomic="true" aria-label="Real-time saved energy usage suggestions">
-    Calculating your saved energy usage options...
-  </section>
-
-  <section class="breakdown" aria-label="Energy usage breakdown">
+  <section class="breakdown">
     <h2>Usage Breakdown</h2>
     <ul>
       <li>Street Lights: <span id="lights">0.00</span> kWh</li>
@@ -260,44 +191,41 @@
     </ul>
   </section>
 
-  <section class="energy-allocation" aria-label="Energy allocation form">
+  <section class="energy-allocation">
     <h2>Allocate Saved Energy</h2>
     <form id="allocationForm" onsubmit="event.preventDefault(); allocateEnergy();">
-      <label for="streetlightsCount">
+      <label>
         Streetlights (0.05 kWh each):
-        <input type="number" id="streetlightsCount" min="0" step="1" value="0" aria-describedby="streetlightsDesc" />
+        <input type="number" id="streetlightsCount" min="0" step="1" value="0" />
       </label>
-      <label for="cctvCount">
+      <label>
         CCTV Cameras (0.03 kWh each):
-        <input type="number" id="cctvCount" min="0" step="1" value="0" aria-describedby="cctvDesc" />
+        <input type="number" id="cctvCount" min="0" step="1" value="0" />
       </label>
-      <label for="sensorCount">
+      <label>
         Sensors (0.02 kWh each):
-        <input type="number" id="sensorCount" min="0" step="1" value="0" aria-describedby="sensorDesc" />
+        <input type="number" id="sensorCount" min="0" step="1" value="0" />
       </label>
-      <button type="submit" aria-label="Allocate saved energy to devices">Allocate Energy</button>
+      <button type="submit">Allocate Energy</button>
     </form>
-    <p id="allocationResult" role="alert" aria-live="polite"></p>
+    <p id="allocationResult"></p>
+  </section>
+
+  <section class="suggestions">
+    <h2>Smart Suggestions</h2>
+    <p id="smartSuggestions">Collecting data...</p>
   </section>
 
   <script>
-    // === JS ===
-
     let generated = 0;
     let used = 0;
     let lights = 0;
     let cctv = 0;
     let sensors = 0;
 
-    const energyPerStreetlight = 0.05; // kWh
-    const energyPerCCTV = 0.03;        // kWh
-    const energyPerSensor = 0.02;      // kWh
-
     function updateValues() {
-      let powerGenerated = (Math.random() * 2 + 1) / 3600; // ~1–3W in kWh/sec
+      let powerGenerated = (Math.random() * 2 + 1) / 3600;
       generated += powerGenerated;
-
-      // Random simulated usage distribution
       lights += powerGenerated * 0.4;
       cctv += powerGenerated * 0.3;
       sensors += powerGenerated * 0.2;
@@ -309,65 +237,31 @@
       document.getElementById("generated").textContent = generated.toFixed(2);
       document.getElementById("used").textContent = used.toFixed(2);
       document.getElementById("saved").textContent = saved.toFixed(2);
-
       document.getElementById("lights").textContent = lights.toFixed(2);
       document.getElementById("cctv").textContent = cctv.toFixed(2);
       document.getElementById("sensors").textContent = sensors.toFixed(2);
 
-      updateSuggestion(saved);
+      updateSuggestions(saved);
     }
 
-    function updateSuggestion(savedEnergy) {
-      const suggestionBox = document.getElementById('suggestionBox');
-
-      if (savedEnergy <= 0) {
-        suggestionBox.textContent = "No saved energy available yet. Keep generating!";
-        return;
+    function updateSuggestions(saved) {
+      const box = document.getElementById("smartSuggestions");
+      if (saved > 1) {
+        box.textContent = "🔋 You can power batteries, EV charging stations, or backup lights.";
+      } else if (saved > 0.3) {
+        box.textContent = "💡 You have moderate energy! Extend lighting hours or add 2 CCTV cameras.";
+      } else if (saved > 0.1) {
+        box.textContent = "⚠️ Low surplus — consider dimming lights or reducing sensor intervals.";
+      } else {
+        box.textContent = "⏳ Still collecting — keep generating to unlock more options.";
       }
-
-      // Calculate how many devices can be powered with saved energy
-      const streetlightsCanPower = Math.floor(savedEnergy / energyPerStreetlight);
-      const cctvCanPower = Math.floor(savedEnergy / energyPerCCTV);
-      const sensorsCanPower = Math.floor(savedEnergy / energyPerSensor);
-
-      let suggestions = [];
-
-      if (streetlightsCanPower > 0) {
-        suggestions.push(`${streetlightsCanPower} streetlight${streetlightsCanPower > 1 ? 's' : ''}`);
-      }
-      if (cctvCanPower > 0) {
-        suggestions.push(`${cctvCanPower} CCTV camera${cctvCanPower > 1 ? 's' : ''}`);
-      }
-      if (sensorsCanPower > 0) {
-        suggestions.push(`${sensorsCanPower} sensor${sensorsCanPower > 1 ? 's' : ''}`);
-      }
-
-      suggestionBox.textContent = `You can power approximately ${suggestions.join(', ')} with your saved energy!`;
     }
-
-    setInterval(updateValues, 1000);
 
     function allocateEnergy() {
-      const streetlightsCount = Number(document.getElementById('streetlightsCount').value);
-      const cctvCount = Number(document.getElementById('cctvCount').value);
-      const sensorCount = Number(document.getElementById('sensorCount').value);
+      const streetlights = Number(document.getElementById("streetlightsCount").value);
+      const cctvs = Number(document.getElementById("cctvCount").value);
+      const sensorUnits = Number(document.getElementById("sensorCount").value);
 
-      const totalRequired = (streetlightsCount * energyPerStreetlight) +
-                            (cctvCount * energyPerCCTV) +
-                            (sensorCount * energyPerSensor);
-
-      const savedEnergy = generated - used;
-      const result = document.getElementById('allocationResult');
-
-      if (totalRequired <= savedEnergy) {
-        result.textContent = `✅ Allocation successful! You allocated ${totalRequired.toFixed(2)} kWh of saved energy.`;
-        result.style.color = '#2ea043';
-      } else {
-        const shortage = (totalRequired - savedEnergy).toFixed(2);
-        result.textContent = `⚠️ Not enough saved energy! You need ${shortage} kWh more.`;
-        result.style.color = '#f85149';
-      }
-    }
-  </script>
-</body>
-</html>
+      const required = (streetlights * 0.05) + (cctvs * 0.03) + (sensorUnits * 0.02);
+      const saved = generated - used;
+      const result = document.getElementById
