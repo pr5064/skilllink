@@ -4,40 +4,229 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BridgeVolt Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* === CSS === */
+
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0d1117;
+      color: #f0f6fc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      color: #58a6ff;
+      margin: 0;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #8b949e;
+      margin-top: 5px;
+    }
+
+    .dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .card {
+      background-color: #161b22;
+      border: 2px solid #30363d;
+      padding: 20px 30px;
+      border-radius: 15px;
+      width: 250px;
+      text-align: center;
+      box-shadow: 0 0 15px #58a6ff55;
+      transition: transform 0.2s ease;
+      user-select: none;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card h2 {
+      font-size: 1.4rem;
+      color: #79c0ff;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 2.3rem;
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .breakdown {
+      max-width: 600px;
+      background-color: #161b22;
+      border: 2px solid #30363d;
+      padding: 20px;
+      border-radius: 15px;
+      color: #79c0ff;
+      font-size: 1.15rem;
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 30px;
+      user-select: none;
+    }
+
+    .breakdown h2 {
+      color: #58a6ff;
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+    }
+
+    .breakdown ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .breakdown li {
+      margin-bottom: 10px;
+    }
+
+    /* === Energy Allocation Form === */
+
+    .energy-allocation {
+      max-width: 600px;
+      background-color: #161b22;
+      border: 2px solid #30363d;
+      padding: 25px 30px;
+      border-radius: 15px;
+      width: 100%;
+      color: #79c0ff;
+      font-size: 1.1rem;
+      box-shadow: 0 0 20px #58a6ff44;
+      user-select: none;
+    }
+
+    .energy-allocation h2 {
+      color: #58a6ff;
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    .energy-allocation label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .energy-allocation input[type=number] {
+      width: 80px;
+      padding: 6px 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #30363d;
+      background-color: #0d1117;
+      color: #f0f6fc;
+      font-family: 'Orbitron', monospace;
+      text-align: right;
+      transition: border-color 0.3s ease;
+    }
+
+    .energy-allocation input[type=number]:focus {
+      outline: none;
+      border-color: #58a6ff;
+    }
+
+    .energy-allocation button {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 10px;
+      background-color: #238636;
+      color: white;
+      font-weight: 700;
+      font-family: 'Orbitron', monospace;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+
+    .energy-allocation button:hover {
+      background-color: #2ea043;
+    }
+
+    #allocationResult {
+      margin-top: 20px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      min-height: 24px;
+      text-align: center;
+      user-select: text;
+    }
+
+    @media (max-width: 700px) {
+      .dashboard {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .card {
+        width: 90%;
+      }
+
+      .energy-allocation {
+        width: 90%;
+      }
+
+      .breakdown {
+        width: 90%;
+      }
+    }
+  </style>
 </head>
-<body class="light-mode">
+<body>
   <header>
     <h1>⚡ BridgeVolt Dashboard</h1>
     <p>Monitoring Real-Time Power from Traffic</p>
-
-    <!-- Controls -->
-    <div class="controls">
-      <button id="theme-toggle">Switch to Dark Mode</button>
-      <button id="go-analytics" onclick="location.href='analytics.html'">Go to Analytics</button>
-    </div>
   </header>
 
-  <main class="dashboard">
-    <div class="card generated">
+  <main class="dashboard" aria-label="Dashboard summary">
+    <div class="card generated" aria-live="polite">
       <h2>Total Generated</h2>
       <p><span id="generated">0.00</span> kWh</p>
     </div>
 
-    <div class="card used">
+    <div class="card used" aria-live="polite">
       <h2>Energy Used</h2>
       <p><span id="used">0.00</span> kWh</p>
     </div>
 
-    <div class="card saved">
+    <div class="card saved" aria-live="polite">
       <h2>Energy Saved</h2>
       <p><span id="saved">0.00</span> kWh</p>
     </div>
   </main>
 
-  <section class="breakdown">
+  <section class="breakdown" aria-label="Energy usage breakdown">
     <h2>Usage Breakdown</h2>
     <ul>
       <li>Street Lights: <span id="lights">0.00</span> kWh</li>
@@ -46,26 +235,84 @@
     </ul>
   </section>
 
-  <section class="info">
-    <p id="suggestion">Saving up... Keep generating!</p>
+  <section class="energy-allocation" aria-label="Energy allocation form">
+    <h2>Allocate Saved Energy</h2>
+    <form id="allocationForm" onsubmit="event.preventDefault(); allocateEnergy();">
+      <label for="streetlightsCount">
+        Streetlights (0.05 kWh each):
+        <input type="number" id="streetlightsCount" min="0" step="1" value="0" aria-describedby="streetlightsDesc" />
+      </label>
+      <label for="cctvCount">
+        CCTV Cameras (0.03 kWh each):
+        <input type="number" id="cctvCount" min="0" step="1" value="0" aria-describedby="cctvDesc" />
+      </label>
+      <label for="sensorCount">
+        Sensors (0.02 kWh each):
+        <input type="number" id="sensorCount" min="0" step="1" value="0" aria-describedby="sensorDesc" />
+      </label>
+      <button type="submit" aria-label="Allocate saved energy to devices">Allocate Energy</button>
+    </form>
+    <p id="allocationResult" role="alert" aria-live="polite"></p>
   </section>
 
-  <script src="script.js"></script>
   <script>
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const body = document.body;
+    // === JS ===
 
-    themeToggleBtn.addEventListener('click', () => {
-      if (body.classList.contains('light-mode')) {
-        body.classList.remove('light-mode');
-        body.classList.add('dark-mode');
-        themeToggleBtn.textContent = 'Switch to Light Mode';
+    let generated = 0;
+    let used = 0;
+    let lights = 0;
+    let cctv = 0;
+    let sensors = 0;
+
+    function updateValues() {
+      let powerGenerated = (Math.random() * 2 + 1) / 3600; // ~1–3W in kWh/sec
+      generated += powerGenerated;
+
+      // Random simulated usage distribution
+      lights += powerGenerated * 0.4;
+      cctv += powerGenerated * 0.3;
+      sensors += powerGenerated * 0.2;
+      used = lights + cctv + sensors;
+
+      let saved = generated - used;
+      if (saved < 0) saved = 0;
+
+      document.getElementById("generated").textContent = generated.toFixed(2);
+      document.getElementById("used").textContent = used.toFixed(2);
+      document.getElementById("saved").textContent = saved.toFixed(2);
+
+      document.getElementById("lights").textContent = lights.toFixed(2);
+      document.getElementById("cctv").textContent = cctv.toFixed(2);
+      document.getElementById("sensors").textContent = sensors.toFixed(2);
+    }
+
+    setInterval(updateValues, 1000);
+
+    function allocateEnergy() {
+      const streetlightsCount = Number(document.getElementById('streetlightsCount').value);
+      const cctvCount = Number(document.getElementById('cctvCount').value);
+      const sensorCount = Number(document.getElementById('sensorCount').value);
+
+      const energyPerStreetlight = 0.05; // kWh
+      const energyPerCCTV = 0.03;        // kWh
+      const energyPerSensor = 0.02;      // kWh
+
+      const totalRequired = (streetlightsCount * energyPerStreetlight) +
+                            (cctvCount * energyPerCCTV) +
+                            (sensorCount * energyPerSensor);
+
+      const savedEnergy = generated - used;
+      const result = document.getElementById('allocationResult');
+
+      if (totalRequired <= savedEnergy) {
+        result.textContent = `✅ Allocation successful! You allocated ${totalRequired.toFixed(2)} kWh of saved energy.`;
+        result.style.color = '#2ea043';
       } else {
-        body.classList.remove('dark-mode');
-        body.classList.add('light-mode');
-        themeToggleBtn.textContent = 'Switch to Dark Mode';
+        const shortage = (totalRequired - savedEnergy).toFixed(2);
+        result.textContent = `⚠️ Not enough saved energy! You need ${shortage} kWh more.`;
+        result.style.color = '#f85149';
       }
-    });
+    }
   </script>
 </body>
 </html>
