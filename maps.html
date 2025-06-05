@@ -3,77 +3,168 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BridgeVolt Map View</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <title>BridgeVolt Dashboard with Locations Overview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
   <style>
-    body, html {
+    /* Base & body */
+    body {
       margin: 0;
-      height: 100%;
+      font-family: 'Orbitron', monospace;
+      background-color: #0d1117; /* dark background */
+      color: #f0f6fc;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    #map {
-      height: 100%;
+    /* Section container (card style) */
+    section.locations-overview {
+      background-color: #161b22; /* same as dashboard cards */
+      max-width: 900px;
       width: 100%;
+      border-radius: 25px;
+      box-shadow: 0 8px 30px rgba(88, 166, 255, 0.25);
+      padding: 40px 50px;
+      margin-top: 40px;
+      color: #e0e0ff;
     }
 
-    .legend {
-      background: white;
-      padding: 10px;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px #aaa;
+    section.locations-overview h2 {
+      font-size: 2.4rem;
+      text-align: center;
+      color: #58a6ff; /* highlight blue */
+      margin-bottom: 30px;
+      letter-spacing: 2px;
+      text-shadow: 0 0 15px #58a6ff88;
+    }
+
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 14px;
+      font-size: 1.15rem;
+      color: #79c0ff;
+    }
+
+    thead tr th {
+      background-color: #0d1117; /* darker header background */
+      padding: 16px 25px;
+      border-radius: 12px 12px 0 0;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      box-shadow: 0 2px 8px #58a6ff55;
+      text-align: center;
+    }
+
+    tbody tr {
+      background-color: #161b22; /* same as section bg */
+      border-radius: 15px;
+      box-shadow: 0 0 12px #58a6ff33;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    tbody tr:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 25px #58a6ffaa;
+    }
+
+    tbody tr td {
+      padding: 18px 28px;
+      text-align: center;
+      border-bottom: none;
+    }
+
+    /* Types (colored badges) */
+    .type-bridge {
+      color: #52b788; /* mint green */
+      font-weight: 700;
+    }
+    .type-tunnel {
+      color: #ffa07a; /* soft salmon */
+      font-weight: 700;
+    }
+    .type-highway {
+      color: #6c63ff; /* purple */
+      font-weight: 700;
+    }
+    .type-city {
+      color: #4dabf7; /* electric blue */
+      font-weight: 700;
+    }
+
+    /* Status */
+    .status-online {
+      color: #00e676; /* bright green */
+      font-weight: 700;
+      text-shadow: 0 0 12px #00e676cc;
+    }
+    .status-offline {
+      color: #ff1744; /* bright red */
+      font-weight: 700;
+      text-shadow: 0 0 15px #ff1744cc;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      section.locations-overview {
+        padding: 20px 25px;
+      }
+      thead tr th, tbody tr td {
+        padding: 12px 15px;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    // Initial Map Settings
-    const map = L.map('map').setView([17.385044, 78.486671], 15); // Example: Hyderabad bridge location
+  <section class="locations-overview">
+    <h2>🌉 BridgeVolt Locations & Power Generation</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Location</th>
+          <th>Type</th>
+          <th>Power Generated (kWh)</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Golden Gate Bridge</td>
+          <td class="type-bridge">Bridge</td>
+          <td>12.34</td>
+          <td class="status-online">Online</td>
+        </tr>
+        <tr>
+          <td>Lincoln Tunnel</td>
+          <td class="type-tunnel">Tunnel</td>
+          <td>8.17</td>
+          <td class="status-online">Online</td>
+        </tr>
+        <tr>
+          <td>Pacific Highway</td>
+          <td class="type-highway">Highway</td>
+          <td>5.92</td>
+          <td class="status-offline">Offline</td>
+        </tr>
+        <tr>
+          <td>Downtown City Center</td>
+          <td class="type-city">City</td>
+          <td>10.45</td>
+          <td class="status-online">Online</td>
+        </tr>
+        <tr>
+          <td>Bay Bridge</td>
+          <td class="type-bridge">Bridge</td>
+          <td>14.67</td>
+          <td class="status-online">Online</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 
-    // Base Layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18
-    }).addTo(map);
-
-    // Bridge marker
-    const bridgeMarker = L.marker([17.385044, 78.486671]).addTo(map)
-      .bindPopup('Bridge Location<br>Traffic-powered energy system.')
-      .openPopup();
-
-    // Simulate Traffic Density Zones
-    const trafficZones = [
-      { lat: 17.386, lng: 78.486, level: 'low' },
-      { lat: 17.384, lng: 78.487, level: 'medium' },
-      { lat: 17.383, lng: 78.485, level: 'high' }
-    ];
-
-    trafficZones.forEach(zone => {
-      let color = zone.level === 'low' ? 'green' : zone.level === 'medium' ? 'orange' : 'red';
-      L.circle([zone.lat, zone.lng], {
-        color: color,
-        fillColor: color,
-        fillOpacity: 0.5,
-        radius: 100
-      }).addTo(map).bindPopup(`Traffic Level: ${zone.level}`);
-    });
-
-    // Optional: Legend
-    const legend = L.control({ position: 'bottomright' });
-    legend.onAdd = function () {
-      const div = L.DomUtil.create('div', 'legend');
-      div.innerHTML = `
-        <strong>Traffic Density</strong><br/>
-        <span style="color:green;">●</span> Low<br/>
-        <span style="color:orange;">●</span> Medium<br/>
-        <span style="color:red;">●</span> High
-      `;
-      return div;
-    };
-    legend.addTo(map);
-  </script>
 </body>
 </html>
