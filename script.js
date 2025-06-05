@@ -41,3 +41,8 @@ function updateSuggestion(savedKWh) {
 }
 
 setInterval(updateValues, 1000); // update every second
+// Your existing simulation code goes here (the one you provided earlier)
+// ...
+
+// Example:
+// setInterval(updateValues, 1000);

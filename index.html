@@ -2,15 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BridgeVolt Dashboard</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body class="light-mode">
   <header>
     <h1>⚡ BridgeVolt Dashboard</h1>
     <p>Monitoring Real-Time Power from Traffic</p>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button id="theme-toggle">Switch to Dark Mode</button>
+      <button id="go-analytics" onclick="location.href='analytics.html'">Go to Analytics</button>
+    </div>
   </header>
 
   <main class="dashboard">
@@ -40,10 +47,25 @@
   </section>
 
   <section class="info">
-    <h2>Saved Energy Usage Suggestion</h2>
-    <p id="suggestion">Loading...</p>
+    <p id="suggestion">Saving up... Keep generating!</p>
   </section>
 
   <script src="script.js"></script>
+  <script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    themeToggleBtn.addEventListener('click', () => {
+      if (body.classList.contains('light-mode')) {
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+        themeToggleBtn.textContent = 'Switch to Light Mode';
+      } else {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+        themeToggleBtn.textContent = 'Switch to Dark Mode';
+      }
+    });
+  </script>
 </body>
 </html>
