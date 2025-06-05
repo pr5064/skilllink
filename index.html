@@ -42,7 +42,7 @@
       flex-wrap: wrap;
       gap: 20px;
       justify-content: center;
-      margin-bottom: 30px;
+      margin-bottom: 15px;
       width: 100%;
       max-width: 900px;
     }
@@ -86,7 +86,7 @@
       font-size: 1.15rem;
       width: 100%;
       max-width: 600px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       user-select: none;
     }
 
@@ -120,6 +120,7 @@
       font-size: 1.1rem;
       box-shadow: 0 0 20px #58a6ff44;
       user-select: none;
+      margin-bottom: 30px;
     }
 
     .energy-allocation h2 {
@@ -183,6 +184,22 @@
       user-select: text;
     }
 
+    /* Real-time suggestion box below saved energy */
+
+    #suggestionBox {
+      max-width: 600px;
+      background-color: #21262d;
+      border: 2px solid #30363d;
+      padding: 15px 20px;
+      border-radius: 15px;
+      color: #79c0ff;
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 30px;
+      box-shadow: 0 0 15px #58a6ff55;
+      user-select: none;
+    }
+
     @media (max-width: 700px) {
       .dashboard {
         flex-direction: column;
@@ -198,6 +215,10 @@
       }
 
       .breakdown {
+        width: 90%;
+      }
+
+      #suggestionBox {
         width: 90%;
       }
     }
@@ -225,6 +246,10 @@
       <p><span id="saved">0.00</span> kWh</p>
     </div>
   </main>
+
+  <section id="suggestionBox" aria-live="polite" aria-atomic="true" aria-label="Real-time saved energy usage suggestions">
+    Calculating your saved energy usage options...
+  </section>
 
   <section class="breakdown" aria-label="Energy usage breakdown">
     <h2>Usage Breakdown</h2>
@@ -264,6 +289,10 @@
     let cctv = 0;
     let sensors = 0;
 
+    const energyPerStreetlight = 0.05; // kWh
+    const energyPerCCTV = 0.03;        // kWh
+    const energyPerSensor = 0.02;      // kWh
+
     function updateValues() {
       let powerGenerated = (Math.random() * 2 + 1) / 3600; // ~1–3W in kWh/sec
       generated += powerGenerated;
@@ -284,6 +313,36 @@
       document.getElementById("lights").textContent = lights.toFixed(2);
       document.getElementById("cctv").textContent = cctv.toFixed(2);
       document.getElementById("sensors").textContent = sensors.toFixed(2);
+
+      updateSuggestion(saved);
+    }
+
+    function updateSuggestion(savedEnergy) {
+      const suggestionBox = document.getElementById('suggestionBox');
+
+      if (savedEnergy <= 0) {
+        suggestionBox.textContent = "No saved energy available yet. Keep generating!";
+        return;
+      }
+
+      // Calculate how many devices can be powered with saved energy
+      const streetlightsCanPower = Math.floor(savedEnergy / energyPerStreetlight);
+      const cctvCanPower = Math.floor(savedEnergy / energyPerCCTV);
+      const sensorsCanPower = Math.floor(savedEnergy / energyPerSensor);
+
+      let suggestions = [];
+
+      if (streetlightsCanPower > 0) {
+        suggestions.push(`${streetlightsCanPower} streetlight${streetlightsCanPower > 1 ? 's' : ''}`);
+      }
+      if (cctvCanPower > 0) {
+        suggestions.push(`${cctvCanPower} CCTV camera${cctvCanPower > 1 ? 's' : ''}`);
+      }
+      if (sensorsCanPower > 0) {
+        suggestions.push(`${sensorsCanPower} sensor${sensorsCanPower > 1 ? 's' : ''}`);
+      }
+
+      suggestionBox.textContent = `You can power approximately ${suggestions.join(', ')} with your saved energy!`;
     }
 
     setInterval(updateValues, 1000);
@@ -292,10 +351,6 @@
       const streetlightsCount = Number(document.getElementById('streetlightsCount').value);
       const cctvCount = Number(document.getElementById('cctvCount').value);
       const sensorCount = Number(document.getElementById('sensorCount').value);
-
-      const energyPerStreetlight = 0.05; // kWh
-      const energyPerCCTV = 0.03;        // kWh
-      const energyPerSensor = 0.02;      // kWh
 
       const totalRequired = (streetlightsCount * energyPerStreetlight) +
                             (cctvCount * energyPerCCTV) +
