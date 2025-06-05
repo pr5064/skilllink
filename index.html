@@ -35,6 +35,29 @@
       margin-top: 5px;
     }
 
+    /* Button to go to maps */
+    .maps-button {
+      background: linear-gradient(90deg, #238636 0%, #52b788 100%);
+      border: none;
+      border-radius: 10px;
+      padding: 14px 40px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 15px #52b788bb;
+      margin-bottom: 30px;
+      transition: background 0.3s ease, transform 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+      letter-spacing: 1.1px;
+    }
+    .maps-button:hover {
+      background: linear-gradient(90deg, #52b788 0%, #238636 100%);
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px #52b788dd;
+    }
+
     .dashboard {
       display: flex;
       flex-wrap: wrap;
@@ -166,6 +189,9 @@
     <h1>⚡ BridgeVolt Dashboard</h1>
     <p>Monitoring Real-Time Power from Traffic</p>
   </header>
+
+  <!-- Button to redirect to maps.html -->
+  <a href="maps.html" class="maps-button" role="button" aria-label="Go to BridgeVolt Locations Map">View Bridge Locations & Power</a>
 
   <main class="dashboard">
     <div class="card">
