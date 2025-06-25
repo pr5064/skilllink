@@ -2,319 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BridgeVolt Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background-color: #0d1117;
-      color: #f0f6fc;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      min-height: 100vh;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    header h1 {
-      font-size: 2.5rem;
-      color: #58a6ff;
-      margin: 0;
-    }
-
-    header p {
-      font-size: 1.1rem;
-      color: #8b949e;
-      margin-top: 5px;
-    }
-
-    /* Button to go to maps */
-    .maps-button {
-      background: linear-gradient(90deg, #238636 0%, #52b788 100%);
-      border: none;
-      border-radius: 10px;
-      padding: 14px 40px;
-      color: white;
-      font-weight: 700;
-      font-size: 1.2rem;
-      cursor: pointer;
-      box-shadow: 0 4px 15px #52b788bb;
-      margin-bottom: 30px;
-      transition: background 0.3s ease, transform 0.2s ease;
-      text-decoration: none;
-      display: inline-block;
-      letter-spacing: 1.1px;
-    }
-    .maps-button:hover {
-      background: linear-gradient(90deg, #52b788 0%, #238636 100%);
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px #52b788dd;
-    }
-
-    .dashboard {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      margin-bottom: 30px;
-      width: 100%;
-      max-width: 900px;
-    }
-
-    .card {
-      background-color: #161b22;
-      border: 2px solid #30363d;
-      padding: 20px 30px;
-      border-radius: 15px;
-      width: 250px;
-      text-align: center;
-      box-shadow: 0 0 15px #58a6ff55;
-      transition: transform 0.2s ease;
-    }
-
-    .card:hover {
-      transform: scale(1.05);
-    }
-
-    .card h2 {
-      font-size: 1.4rem;
-      color: #79c0ff;
-      margin-bottom: 8px;
-    }
-
-    .card p {
-      font-size: 2.3rem;
-      margin: 0;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-
-    .breakdown, .energy-allocation, .suggestions {
-      background-color: #161b22;
-      border: 2px solid #30363d;
-      padding: 20px 30px;
-      border-radius: 15px;
-      width: 100%;
-      max-width: 600px;
-      margin-bottom: 30px;
-    }
-
-    .breakdown h2, .energy-allocation h2, .suggestions h2 {
-      color: #58a6ff;
-      margin-bottom: 15px;
-      font-size: 1.8rem;
-    }
-
-    .breakdown ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .breakdown li {
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-    }
-
-    .energy-allocation label {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 15px;
-    }
-
-    .energy-allocation input[type=number] {
-      width: 80px;
-      padding: 6px 10px;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: 1px solid #30363d;
-      background-color: #0d1117;
-      color: #f0f6fc;
-      text-align: right;
-    }
-
-    .energy-allocation input:focus {
-      outline: none;
-      border-color: #58a6ff;
-    }
-
-    .energy-allocation button {
-      display: block;
-      margin: 20px auto 0;
-      padding: 12px 30px;
-      border: none;
-      border-radius: 10px;
-      background-color: #238636;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .energy-allocation button:hover {
-      background-color: #2ea043;
-    }
-
-    #allocationResult {
-      margin-top: 20px;
-      font-size: 1.15rem;
-      text-align: center;
-    }
-
-    .suggestions p {
-      font-size: 1.1rem;
-      color: #9ecbff;
-      text-align: center;
-      min-height: 40px;
-    }
-
-    @media (max-width: 700px) {
-      .dashboard {
-        flex-direction: column;
-        align-items: center;
-      }
-      .card, .breakdown, .energy-allocation, .suggestions {
-        width: 90%;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkillLink – Collaborate & Build</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 <body>
   <header>
-    <h1>⚡ BridgeVolt Dashboard</h1>
-    <p>Monitoring Real-Time Power from Traffic</p>
+    <h1>SkillLink</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="login.html">Login</a>
+    </nav>
   </header>
 
-  <!-- Button to redirect to maps.html -->
-  <a href="maps.html" class="maps-button" role="button" aria-label="Go to BridgeVolt Locations Map">View Bridge Locations & Power</a>
-
-  <main class="dashboard">
-    <div class="card">
-      <h2>Total Generated</h2>
-      <p><span id="generated">0.00</span> kWh</p>
+  <section class="hero">
+    <div class="hero-text">
+      <h2>Connect with the Right Minds</h2>
+      <p>SkillLink helps students discover collaborators, share ideas, and build real-world projects together.</p>
+      <a href="login.html" class="btn">Get Started</a>
     </div>
-    <div class="card">
-      <h2>Energy Used</h2>
-      <p><span id="used">0.00</span> kWh</p>
+    <div class="lottie">
+      <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_zrqthn6o.json"
+        background="transparent" speed="1" loop autoplay></lottie-player>
     </div>
-    <div class="card">
-      <h2>Energy Saved</h2>
-      <p><span id="saved">0.00</span> kWh</p>
-    </div>
-  </main>
-
-  <section class="breakdown">
-    <h2>Usage Breakdown</h2>
-    <ul>
-      <li>Street Lights: <span id="lights">0.00</span> kWh</li>
-      <li>CCTV Cameras: <span id="cctv">0.00</span> kWh</li>
-      <li>Sensors: <span id="sensors">0.00</span> kWh</li>
-    </ul>
   </section>
 
-  <section class="energy-allocation">
-    <h2>Allocate Saved Energy</h2>
-    <form id="allocationForm" onsubmit="event.preventDefault(); allocateEnergy();">
-      <label>
-        Streetlights (0.05 kWh each):
-        <input type="number" id="streetlightsCount" min="0" step="1" value="0" />
-      </label>
-      <label>
-        CCTV Cameras (0.03 kWh each):
-        <input type="number" id="cctvCount" min="0" step="1" value="0" />
-      </label>
-      <label>
-        Sensors (0.02 kWh each):
-        <input type="number" id="sensorCount" min="0" step="1" value="0" />
-      </label>
-      <button type="submit">Allocate Energy</button>
-    </form>
-    <p id="allocationResult"></p>
-  </section>
-
-  <section class="suggestions">
-    <h2>Smart Suggestions</h2>
-    <p id="smartSuggestions">Collecting data...</p>
-  </section>
-
-  <script>
-    let generated = 0;
-    let used = 0;
-    let lights = 0;
-    let cctv = 0;
-    let sensors = 0;
-
-    function updateValues() {
-      // Simulate power generated per second (between ~0.0003 to 0.0008 kWh)
-      let powerGenerated = (Math.random() * 2 + 1) / 3600;
-      generated += powerGenerated;
-
-      // Allocate generated power to devices
-      let deltaLights = powerGenerated * 0.4;
-      let deltaCctv = powerGenerated * 0.3;
-      let deltaSensors = powerGenerated * 0.2;
-
-      lights += deltaLights;
-      cctv += deltaCctv;
-      sensors += deltaSensors;
-
-      used = lights + cctv + sensors;
-
-      let saved = generated - used;
-      if (saved < 0) saved = 0;
-
-      // Update DOM
-      document.getElementById("generated").textContent = generated.toFixed(2);
-      document.getElementById("used").textContent = used.toFixed(2);
-      document.getElementById("saved").textContent = saved.toFixed(2);
-      document.getElementById("lights").textContent = lights.toFixed(2);
-      document.getElementById("cctv").textContent = cctv.toFixed(2);
-      document.getElementById("sensors").textContent = sensors.toFixed(2);
-
-      updateSuggestions(saved);
-    }
-
-    function updateSuggestions(saved) {
-      const box = document.getElementById("smartSuggestions");
-      if (saved > 1) {
-        box.textContent = "🔋 You can power batteries, EV charging stations, or backup lights.";
-      } else if (saved > 0.3) {
-        box.textContent = "💡 You have moderate energy! Extend lighting hours or add 2 CCTV cameras.";
-      } else if (saved > 0.1) {
-        box.textContent = "⚠️ Low surplus — consider dimming lights or reducing sensor intervals.";
-      } else {
-        box.textContent = "⏳ Still collecting — keep generating to unlock more options.";
-      }
-    }
-
-    function allocateEnergy() {
-      const streetlights = Number(document.getElementById("streetlightsCount").value);
-      const cctvs = Number(document.getElementById("cctvCount").value);
-      const sensorUnits = Number(document.getElementById("sensorCount").value);
-
-      const required = (streetlights * 0.05) + (cctvs * 0.03) + (sensorUnits * 0.02);
-      const saved = generated - used;
-      const result = document.getElementById("allocationResult");
-
-      if (required <= saved) {
-        used += required;
-        document.getElementById("used").textContent = used.toFixed(2);
-        document.getElementById("saved").textContent = (generated - used).toFixed(2);
-        result.textContent = "✅ Energy successfully allocated!";
-        result.style.color = "#58a6ff";
-      } else {
-        result.textContent = "❌ Not enough saved energy. Please generate more.";
-        result.style.color = "#f85149";
-      }
-    }
-
-    // Update values every second to simulate real-time data
-    setInterval(updateValues, 1000);
-  </script>
+  <footer>
+    © 2025 SkillLink. Empowering student innovation.
+  </footer>
 </body>
 </html>
