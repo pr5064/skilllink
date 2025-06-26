@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SkillLink – Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.21/vanta.net.min.js"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit',sans-serif; }
+    body { background:#101010; color:#fff; overflow-x:hidden; }
+    header { position:fixed; top:0; left:0; width:100%; padding:20px 40px;
+      backdrop-filter:blur(14px); background:rgba(16,16,16,0.5);
+      display:flex; justify-content:space-between; align-items:center; z-index:100;
+      border-bottom:1px solid rgba(255,255,255,0.1); }
+    .brand { font-size:1.8rem; font-weight:900; color:#00f0ff; }
+    nav a { color:#fff; margin-left:24px; text-decoration:none; font-weight:500; transition:color .2s }
+    nav a:hover { color:#00f0ff; }
+    #vanta-bg { width:100%; min-height:100vh; padding-top:100px; padding-bottom:60px }
+    .container { max-width:1200px; margin:0 auto; padding:0 20px; display:flex; flex-direction:column; gap:60px }
+    .welcome { text-align:center }
+    .welcome h2 { font-size:2.8rem; font-weight:900; margin-bottom:10px; color:#00f0ff; }
+    .welcome p { opacity:0.85; font-size:1.2rem; }
+    .grid3 { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:30px }
+    .card { background:rgba(255,255,255,0.04); backdrop-filter:blur(20px);
+      border:1px solid rgba(255,255,255,0.12); border-radius:28px; padding:36px;
+      transition:transform .2s, box-shadow .2s; }
+    .card:hover { transform:translateY(-8px); box-shadow:0 8px 24px rgba(0,0,0,0.5); }
+    .card h3 { font-weight:900; margin-bottom:12px; font-size:1.4rem; }
+    .skill-search { text-align:center }
+    .skill-search h3 { font-size:1.5rem; font-weight:700; margin-bottom:12px; }
+    .skill-search input { width:100%; max-width:500px; padding:16px 20px; font-size:1.1rem;
+      border-radius:14px; border:none; background:rgba(255,255,255,0.08); color:#fff; }
+    .skill-search input::placeholder { color:rgba(255,255,255,0.6); }
+    .results { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:22px; margin-top:28px }
+    .result { background:rgba(255,255,255,0.04); backdrop-filter:blur(20px);
+      border:1px solid rgba(255,255,255,0.12); border-radius:24px; padding:24px;
+      display:flex; flex-direction:column; align-items:center; transition:transform .2s; }
+    .result:hover { transform:scale(1.05); }
+    .result h4 { font-size:1.2rem; font-weight:700; margin-bottom:4px }
+    .result p { opacity:0.85; font-size:1rem }
+    .result button { margin-top:14px; padding:10px 18px; background:#00f0ff; color:#111;
+      border:none; border-radius:14px; cursor:pointer; font-weight:700; transition:background .2s }
+    .result button:hover { background:#00d0dd; }
+    .chatbox { position:fixed; bottom:30px; right:30px; width:350px; max-width:90%;
+      background:rgba(16,16,16,0.85); backdrop-filter:blur(18px);
+      border:1px solid rgba(255,255,255,0.1); border-radius:24px;
+      display:flex; flex-direction:column; overflow:hidden; z-index:200 }
+    .chat-header { padding:14px 18px; display:flex; justify-content:space-between;
+      align-items:center; background:rgba(0,0,0,0.6); font-weight:700 }
+    .chat-header button { background:transparent; border:none; color:#fff; font-size:1.2rem; cursor:pointer }
+    .chat-body { flex:1; padding:14px; display:flex; flex-direction:column; gap:10px;
+      max-height:260px; overflow-y:auto }
+    .chat-msg { max-width:75%; padding:10px 14px; border-radius:18px; font-size:0.95rem;
+      line-height:1.4; background:rgba(255,255,255,0.1); color:#fff }
+    .chat-msg.sent { margin-left:auto; background:#00f0ff; color:#111 }
+    .chat-input { padding:14px; display:flex; background:rgba(0,0,0,0.5) }
+    .chat-input input { flex:1; padding:12px 16px; border-radius:18px; border:none;
+      background:rgba(255,255,255,0.1); color:#fff; }
+    .chat-input button { margin-left:14px; padding:10px 16px; background:#00f0ff;
+      color:#111; border:none; border-radius:18px; font-weight:700; cursor:pointer }
+    footer { text-align:center; padding:24px 0; opacity:0.7; font-size:0.9rem; margin-top:40px }
+    @media(max-width:768px) {
+      header { padding:14px 20px }
+      .brand { font-size:1.5rem }
+      nav a { margin-left:16px; font-size:0.95rem }
+      .card { padding:28px }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">SkillLink</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </nav>
+  </header>
+
+  <div id="vanta-bg">
+    <div class="container">
+      <section class="welcome">
+        <h2>Welcome back, <span id="userName">User</span> 👋</h2>
+        <p>Your hub for exploring skills, collaborating on projects, and growing together.</p>
+      </section>
+
+      <section class="grid3">
+        <div class="card"><h3>🔍 Explore Skills</h3><p>Search users by skill and send requests instantly.</p></div>
+        <div class="card"><h3>📁 My Projects</h3><p>Manage your collaborations and view progress.</p></div>
+        <div class="card"><h3>🛠 Add Skill</h3><p>Update your profile for better matches.</p></div>
+      </section>
+
+      <section class="skill-search">
+        <h3>Search users by skill</h3>
+        <input id="skillSearch" type="text" placeholder="e.g. Python, VLSI, React…" />
+        <div class="results" id="results"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Chatbox -->
+  <div class="chatbox" id="chatbox">
+    <div class="chat-header">
+      Chat
+      <button onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-msg">👋 Hey, looking for a React dev?</div>
+      <div class="chat-msg sent">I’m available!</div>
+    </div>
+    <div class="chat-input">
+      <input id="chatInput" type="text" placeholder="Type a message…" />
+      <button onclick="sendChat()">Send</button>
+    </div>
+  </div>
+
+  <footer>© 2025 SkillLink. Collaborate. Create. Connect.</footer>
+
+  <script>
+    VANTA.NET({
+      el:"#vanta-bg",
+      mouseControls:true, touchControls:true, minHeight:400, minWidth:200,
+      scale:1.0, scaleMobile:1.0, color:0x00f0ff, backgroundColor:0x101010,
+      maxDistance:20.0, spacing:25.0
+    });
+
+    const user = JSON.parse(localStorage.getItem("skilllinkUser"));
+    if(!user) window.location.href="index.html";
+    else document.getElementById("userName").textContent=user.name;
+
+    function logout(){
+      localStorage.removeItem("skilllinkUser");
+      window.location.href="index.html";
+    }
+
+    const people = [
+      { name:"Ananya", skill:"Python" },
+      { name:"Yuvan", skill:"VLSI" },
+      { name:"Mrunal", skill:"UI/UX" },
+      { name:"Rishi", skill:"C++" },
+      { name:"Kavya", skill:"JavaScript" }
+    ];
+
+    document.getElementById("skillSearch").addEventListener("input", e => {
+      const q = e.target.value.trim().toLowerCase();
+      const html = people.filter(p => p.skill.toLowerCase().includes(q)).map(p => `
+        <div class="result">
+          <h4>${p.name}</h4>
+          <p>${p.skill}</p>
+          <button onclick="alert('Request sent to ${p.name}')">Request</button>
+        </div>
+      `).join("");
+      document.getElementById("results").innerHTML = html;
+    });
+
+    function toggleChat(){
+      const cb = document.getElementById("chatbox");
+      cb.style.display = cb.style.display==="none" ? "flex" : "none";
+    }
+    function sendChat(){
+      const msg = document.getElementById("chatInput").value.trim();
+      if(!msg) return;
+      const div = document.createElement("div");
+      div.className = "chat-msg sent";
+      div.textContent = msg;
+      document.getElementById("chatBody").appendChild(div);
+      document.getElementById("chatInput").value = "";
+      document.getElementById("chatBody").scrollTop = document.getElementById("chatBody").scrollHeight;
+    }
+  </script>
+</body>
+</html>
