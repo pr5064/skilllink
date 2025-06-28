@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collaboration Status Tracker | SkillLink</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #7f5af0;
+      --secondary: #2cb67d;
+      --accent: #ff6e6c;
+      --dark: #16161a;
+      --light: #fffffe;
+      --gray: #94a1b2;
+      --card-bg: rgba(22, 22, 26, 0.7);
+      --glass: rgba(255, 255, 255, 0.08);
+      --transition: all 0.3s ease;
+    }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(135deg, #16161a 0%, #232946 100%);
+      color: var(--light);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      margin-bottom: 30px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--light);
+      text-decoration: none;
+    }
+    .logo i {
+      color: var(--primary);
+    }
+    .dashboard-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(127, 90, 240, 0.3);
+    }
+    .dashboard-link:hover {
+      background: #6a4bc9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(127, 90, 240, 0.4);
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: var(--gray);
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+      max-width: 800px;
+      line-height: 1.6;
+    }
+    .form-container {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 500;
+      color: var(--secondary);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass);
+      padding: 15px;
+      border-radius: 12px;
+      color: var(--light);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(127, 90, 240, 0.2);
+    }
+    .btn {
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-size: 1rem;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 20px rgba(127, 90, 240, 0.3);
+    }
+    .btn-primary:hover {
+      background: #6a4bc9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(127, 90, 240, 0.4);
+    }
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 25px;
+    }
+    .project-card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 40px rgba(127, 90, 240, 0.2);
+      border-color: rgba(127, 90, 240, 0.3);
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: var(--primary);
+    }
+    .project-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .project-status {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .status-planning {
+      background: rgba(127, 90, 240, 0.15);
+      color: var(--primary);
+    }
+    .status-in-progress {
+      background: rgba(44, 182, 125, 0.15);
+      color: var(--secondary);
+    }
+    .status-review {
+      background: rgba(255, 110, 108, 0.15);
+      color: var(--accent);
+    }
+    .status-completed {
+      background: rgba(101, 119, 179, 0.15);
+      color: #6577b3;
+    }
+    .project-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .skill-tag {
+      background: rgba(127, 90, 240, 0.15);
+      color: var(--primary);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+    .progress-container {
+      margin: 20px 0;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+    .progress-bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 10px;
+      background: var(--secondary);
+      transition: width 0.5s ease;
+    }
+    .project-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-top: 15px;
+    }
+    .project-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .action-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass);
+      color: var(--gray);
+    }
+    .action-btn:hover {
+      background: rgba(127, 90, 240, 0.1);
+      color: var(--light);
+    }
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--gray);
+    }
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      header {
+        flex-direction: column;
+        gap: 20px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="#" class="logo">
+        <i class="fas fa-project-diagram"></i>
+        <span>SkillLink Tracker</span>
+      </a>
+      <a href="dashboard.html" class="dashboard-link">
+        <i class="fas fa-tachometer-alt"></i>
+        Dashboard
+      </a>
+    </header>
+    <main>
+      <h1>Collaboration Status Tracker</h1>
+      <p class="subtitle">Monitor your project progress, track collaboration status, and keep everyone in sync. Update status in real-time and visualize your team's progress.</p>
+      <div class="form-container">
+        <h2>Add New Project</h2>
+        <form id="projectForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="projectName">Project Name</label>
+              <input type="text" id="projectName" placeholder="Enter project name" required>
+            </div>
+            <div class="form-group">
+              <label for="projectSkills">Skills Required</label>
+              <input type="text" id="projectSkills" placeholder="Java, Python, Design, etc." required>
+            </div>
+            <div class="form-group">
+              <label for="projectStatus">Current Status</label>
+              <select id="projectStatus" required>
+                <option value="planning">Planning</option>
+                <option value="in-progress">In Progress</option>
+                <option value="review">Review</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="projectProgress">Progress (%)</label>
+              <input type="number" id="projectProgress" min="0" max="100" placeholder="0-100" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Add Project</button>
+        </form>
+      </div>
+      <div class="projects-header">
+        <h2>Your Projects</h2>
+        <div class="project-count">3 projects</div>
+      </div>
+      <div class="projects-grid"></div>
+    </main>
+  </div>
+  <script>
+    // Project management functionality
+    const projectForm = document.getElementById('projectForm');
+    const projectsGrid = document.querySelector('.projects-grid');
+    // Sample projects data
+    let projects = [
+      {
+        id: 1,
+        name: "E-commerce Platform",
+        skills: ["Java", "React", "UI/UX", "AWS"],
+        status: "in-progress",
+        progress: 65,
+        collaborators: 4,
+        lastUpdated: "2 days ago"
+      },
+      {
+        id: 2,
+        name: "Mobile App Development",
+        skills: ["Swift", "Kotlin", "Firebase"],
+        status: "review",
+        progress: 85,
+        collaborators: 3,
+        lastUpdated: "1 day ago"
+      },
+      {
+        id: 3,
+        name: "AI Research Project",
+        skills: ["Python", "TensorFlow", "Data Science"],
+        status: "completed",
+        progress: 100,
+        collaborators: 5,
+        lastUpdated: "1 week ago"
+      }
+    ];
+    // Function to render projects
+    function renderProjects() {
+      projectsGrid.innerHTML = '';
+      if (projects.length === 0) {
+        projectsGrid.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <h3>No projects yet</h3>
+            <p>Add your first project to start tracking collaboration status</p>
+          </div>
+        `;
+        return;
+      }
+      projects.forEach(project => {
+        const statusClass = `status-${project.status.replace(' ', '-')}`;
+        const statusText = project.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+        const skillsHTML = project.skills.map(skill =>
+          `<span class="skill-tag">${skill}</span>`
+        ).join('');
+        const projectCard = document.createElement('div');
+        projectCard.className = 'project-card';
+        projectCard.innerHTML = `
+          <div class="project-title">
+            <span>${project.name}</span>
+            <span class="project-status ${statusClass}">${statusText}</span>
+          </div>
+          <div class="project-skills">
+            ${skillsHTML}
+          </div>
+          <div class="progress-container">
+            <div class="progress-label">
+              <span>Project Progress</span>
+              <span>${project.progress}%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${project.progress}%"></div>
+            </div>
+          </div>
+          <div class="project-meta">
+            <span><i class="fas fa-users"></i> ${project.collaborators} collaborators</span>
+            <span>Last updated: ${project.lastUpdated}</span>
+          </div>
+          <div class="project-actions">
+            <div class="action-btn"><i class="fas fa-edit"></i> Edit</div>
+            <div class="action-btn"><i class="fas fa-sync"></i> Update</div>
+            <div class="action-btn"><i class="fas fa-trash"></i> Remove</div>
+          </div>
+        `;
+        projectsGrid.appendChild(projectCard);
+      });
+      // Update project count
+      document.querySelector('.project-count').textContent = `${projects.length} projects`;
+    }
+    // Handle form submission
+    projectForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('projectName').value;
+      const skills = document.getElementById('projectSkills').value.split(',').map(s => s.trim());
+      const status = document.getElementById('projectStatus').value;
+      const progress = parseInt(document.getElementById('projectProgress').value);
+      // Create new project
+      const newProject = {
+        id: projects.length + 1,
+        name,
+        skills,
+        status,
+        progress,
+        collaborators: 1,
+        lastUpdated: "Just now"
+      };
+      projects.push(newProject);
+      renderProjects();
+      // Reset form
+      projectForm.reset();
+    });
+    // Initial render
+    renderProjects();
+  </script>
+</body>
+</html>
