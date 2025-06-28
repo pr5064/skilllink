@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SkillLink - Find Collaborators</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Outfit', sans-serif; }
+    .bg-animated {
+      background: linear-gradient(120deg, #18122b, #7f5af0 35%, #2cb67d 60%, #ff6e6c 85%, #232946 100%);
+      background-size: 300% 300%;
+      animation: gradientMove 18s ease-in-out infinite;
+    }
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(24px);
+      border: 1.5px solid rgba(255,255,255,0.18);
+      box-shadow: 0 8px 40px 0 rgba(127,90,240,0.10), 0 1.5px 6px 0 rgba(0,0,0,0.07);
+    }
+    .card-glow {
+      box-shadow: 0 8px 32px 0 rgba(127,90,240,0.13), 0 1.5px 6px 0 rgba(0,0,0,0.07);
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 48px 0 rgba(127,90,240,0.22), 0 2px 12px 0 rgba(0,0,0,0.10);
+      border-color: #7f5af0;
+    }
+    .icon-gradient {
+      background: linear-gradient(135deg, #7f5af0 0%, #2cb67d 100%);
+      color: white;
+      box-shadow: 0 2px 12px 0 rgba(127,90,240,0.12);
+    }
+    .skill-tag {
+      display: inline-block;
+      background: rgba(127,90,240,0.2);
+      border: 1px solid rgba(127,90,240,0.4);
+      border-radius: 20px;
+      padding: 2px 12px;
+      font-size: 0.8rem;
+      margin: 2px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .skill-tag:hover, .skill-tag.selected {
+      background: rgba(127,90,240,0.4);
+      transform: translateY(-2px);
+    }
+    .availability-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+    .available { background-color: #2cb67d; }
+    .busy { background-color: #ff6e6c; }
+    .away { background-color: #f5c7f7; }
+    .collaborator-card {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .collaborator-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top left, rgba(127,90,240,0.1), transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(127,90,240,0.3);
+      border: 1px solid rgba(127,90,240,0.5);
+      border-radius: 20px;
+      padding: 4px 12px;
+      margin: 4px;
+      font-size: 0.9rem;
+    }
+    .filter-chip .remove {
+      margin-left: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body class="bg-animated min-h-screen text-white overflow-x-hidden relative">
+
+  <!-- SVG Blobs for Layered Depth -->
+  <svg class="absolute inset-0 w-full h-full z-0 pointer-events-none" aria-hidden="true">
+    <defs>
+      <radialGradient id="bg1" cx="50%" cy="50%" r="80%">
+        <stop offset="0%" stop-color="#7f5af0" stop-opacity="0.23"/>
+        <stop offset="100%" stop-color="#232946" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="bg2" cx="80%" cy="30%" r="60%">
+        <stop offset="0%" stop-color="#2cb67d" stop-opacity="0.12"/>
+        <stop offset="100%" stop-color="#232946" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="bg3" cx="30%" cy="80%" r="60%">
+        <stop offset="0%" stop-color="#ff6e6c" stop-opacity="0.10"/>
+        <stop offset="100%" stop-color="#232946" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <circle cx="50%" cy="40%" r="420" fill="url(#bg1)"/>
+    <circle cx="85%" cy="25%" r="260" fill="url(#bg2)"/>
+    <circle cx="20%" cy="85%" r="210" fill="url(#bg3)"/>
+  </svg>
+
+  <div class="min-h-screen relative z-10 p-6 md:p-12">
+    <!-- Top Navigation -->
+    <div class="flex justify-between items-center mb-10">
+      <a href="dashboard.html" class="glass px-6 py-3 rounded-xl flex items-center gap-2 hover:bg-blue-600 transition">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+      </a>
+      <div class="flex items-center gap-4">
+        <button class="relative w-12 h-12 rounded-full glass hover:bg-blue-600 transition flex items-center justify-center text-xl">
+          <i class="fa-solid fa-bell"></i>
+          <span class="absolute -top-1 -right-1 bg-red-600 text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
+        </button>
+        <button class="relative w-12 h-12 rounded-full glass hover:bg-blue-600 transition flex items-center justify-center text-xl">
+          <i class="fa-solid fa-user"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Page Title -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-blue-400 to-green-400 text-transparent bg-clip-text">Find Collaborators</h1>
+      <p class="text-white/80 max-w-2xl mx-auto">Connect with experts worldwide who share your interests and skills. Filter by expertise, location, and availability.</p>
+    </div>
+    
+    <!-- Active Filters Display -->
+    <div id="active-filters" class="glass rounded-2xl p-4 mb-6 flex flex-wrap hidden">
+      <div class="text-sm font-medium mr-3">Active filters:</div>
+      <!-- Active filters will appear here -->
+    </div>
+    
+    <!-- Search and Filters -->
+    <div class="glass rounded-2xl p-6 mb-10">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label class="block text-sm font-medium mb-2">Search by Name</label>
+          <div class="relative">
+            <input type="text" placeholder="Search collaborators..."
+                   class="w-full py-3 pl-12 pr-4 rounded-xl glass border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-white/60"
+                   id="name-search">
+            <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></i>
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium mb-2">Filter by Expertise</label>
+          <select class="w-full py-3 px-4 rounded-xl glass border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                  id="expertise-filter">
+            <option value="all">All Expertise Areas</option>
+            <option>Frontend Development</option>
+            <option>Backend Development</option>
+            <option>UI/UX Design</option>
+            <option>Data Science</option>
+            <option>Project Management</option>
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium mb-2">Availability</label>
+          <select class="w-full py-3 px-4 rounded-xl glass border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                  id="availability-filter">
+            <option value="all">Any Availability</option>
+            <option>Available Now</option>
+            <option>Part-time</option>
+            <option>Contract Basis</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Skill Filter Section -->
+      <div class="mt-6">
+        <label class="block text-sm font-medium mb-2">Filter by Skills</label>
+        <div class="mb-4 flex flex-wrap gap-2" id="skill-tags-container">
+          <span class="skill-tag" data-skill="Figma">Figma</span>
+          <span class="skill-tag" data-skill="React">React</span>
+          <span class="skill-tag" data-skill="Node.js">Node.js</span>
+          <span class="skill-tag" data-skill="Python">Python</span>
+          <span class="skill-tag" data-skill="UI Design">UI Design</span>
+          <span class="skill-tag" data-skill="Data Science">Data Science</span>
+          <span class="skill-tag" data-skill="AWS">AWS</span>
+          <span class="skill-tag" data-skill="Docker">Docker</span>
+          <span class="skill-tag" data-skill="Agile">Agile</span>
+          <span class="skill-tag" data-skill="TypeScript">TypeScript</span>
+          <span class="skill-tag" data-skill="Firebase">Firebase</span>
+          <span class="skill-tag" data-skill="Scrum">Scrum</span>
+        </div>
+      </div>
+      
+      <div class="flex justify-between mt-4">
+        <button id="clear-filters" class="text-blue-400 hover:underline">
+          <i class="fa-solid fa-rotate-left mr-2"></i>Clear all filters
+        </button>
+        <button id="apply-filters" class="bg-blue-600 hover:bg-blue-700 transition px-8 py-3 rounded-xl font-semibold text-white flex items-center gap-2">
+          <i class="fa-solid fa-filter"></i> Apply Filters
+        </button>
+      </div>
+    </div>
+    
+    <!-- Collaborators Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="collaborators-grid">
+      <!-- Collaborator 1 -->
+      <div class="glass card-glow card-hover rounded-2xl p-6 collaborator-card" data-skills="Figma,UI Design,Prototyping,Adobe XD" data-expertise="UI/UX Design" data-availability="Available Now">
+        <div class="flex items-start mb-4">
+          <div class="w-16 h-16 rounded-full icon-gradient flex items-center justify-center text-xl font-bold mr-4">JD</div>
+          <div>
+            <h3 class="text-xl font-bold">James Dawson</h3>
+            <p class="text-blue-400">Senior UI/UX Designer</p>
+            <div class="flex items-center mt-1">
+              <span class="availability-dot available"></span>
+              <span class="text-sm">Available for new projects</span>
+            </div>
+          </div>
+        </div>
+        
+        <p class="text-white/80 mb-4">Creating beautiful interfaces with 8+ years of experience. Passionate about user-centered design.</p>
+        
+        <div class="mb-4">
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Adobe XD</span>
+          <span class="skill-tag">UI Design</span>
+          <span class="skill-tag">Prototyping</span>
+        </div>
+        
+        <div class="flex justify-end">
+          <button class="bg-green-500 hover:bg-green-600 transition px-4 py-2 rounded-lg font-semibold text-white">
+            Connect <i class="fa-solid fa-arrow-right ml-1"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Collaborator 2 -->
+      <div class="glass card-glow card-hover rounded-2xl p-6 collaborator-card" data-skills="React,Node.js,AWS,TypeScript" data-expertise="Backend Development" data-availability="Part-time">
+        <div class="flex items-start mb-4">
+          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-red-400 flex items-center justify-center text-xl font-bold mr-4">SR</div>
+          <div>
+            <h3 class="text-xl font-bold">Sarah Reynolds</h3>
+            <p class="text-blue-400">Full Stack Developer</p>
+            <div class="flex items-center mt-1">
+              <span class="availability-dot busy"></span>
+              <span class="text-sm">Available part-time</span>
+            </div>
+          </div>
+        </div>
+        
+        <p class="text-white/80 mb-4">JavaScript specialist with expertise in React, Node.js, and cloud architecture. 10+ years experience.</p>
+        
+        <div class="mb-4">
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">TypeScript</span>
+        </div>
+        
+        <div class="flex justify-end">
+          <button class="bg-green-500 hover:bg-green-600 transition px-4 py-2 rounded-lg font-semibold text-white">
+            Connect <i class="fa-solid fa-arrow-right ml-1"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Collaborator 3 -->
+      <div class="glass card-glow card-hover rounded-2xl p-6 collaborator-card" data-skills="Python,TensorFlow,SQL,Data Visualization" data-expertise="Data Science" data-availability="Available Now">
+        <div class="flex items-start mb-4">
+          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400 to-pink-400 flex items-center justify-center text-xl font-bold mr-4">MP</div>
+          <div>
+            <h3 class="text-xl font-bold">Michael Patel</h3>
+            <p class="text-blue-400">Data Scientist</p>
+            <div class="flex items-center mt-1">
+              <span class="availability-dot available"></span>
+              <span class="text-sm">Available for consulting</span>
+            </div>
+          </div>
+        </div>
+        
+        <p class="text-white/80 mb-4">Transforming data into insights. Specialized in machine learning, predictive analytics, and data visualization.</p>
+        
+        <div class="mb-4">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">TensorFlow</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">Data Visualization</span>
+        </div>
+        
+        <div class="flex justify-end">
+          <button class="bg-green-500 hover:bg-green-600 transition px-4 py-2 rounded-lg font-semibold text-white">
+            Connect <i class="fa-solid fa-arrow-right ml-1"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Collaborator 4 -->
+      <div class="glass card-glow card-hover rounded-2xl p-6 collaborator-card" data-skills="Docker,Kubernetes,AWS,CI/CD" data-expertise="DevOps" data-availability="Contract Basis">
+        <div class="flex items-start mb-4">
+          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xl font-bold mr-4">EC</div>
+          <div>
+            <h3 class="text-xl font-bold">Emma Chen</h3>
+            <p class="text-blue-400">DevOps Engineer</p>
+            <div class="flex items-center mt-1">
+              <span class="availability-dot away"></span>
+              <span class="text-sm">Available for contracts</span>
+            </div>
+          </div>
+        </div>
+        
+        <p class="text-white/80 mb-4">Infrastructure specialist with expertise in cloud solutions, CI/CD pipelines, and scalable architecture.</p>
+        
+        <div class="mb-4">
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">Kubernetes</span>
+          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">CI/CD</span>
+        </div>
+        
+        <div class="flex justify-end">
+          <button class="bg-green-500 hover:bg-green-600 transition px-4 py-2 rounded-lg font-semibold text-white">
+            Connect <i class="fa-solid fa-arrow-right ml-1"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Collaborator 5 -->
+      <div class="glass card-glow card-hover rounded-2xl p-6 collaborator-card" data-skills="React Native,Swift,Kotlin,Firebase" data-expertise="Mobile Development" data-availability="Available Now">
+        <div class="flex items-start mb-4">
+          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-blue-400 flex items-center justify-center text-xl font-bold mr-4">TL</div>
+          <div>
+            <h3 class="text-xl font-bold">Thomas Lee</h3>
+            <p class="text-blue-400">Mobile App Developer</p>
+            <div class="flex items-center mt-1">
+              <span class="availability-dot available"></span>
+              <span class="text-sm">Available for new projects</span>
+            </div>
+          </div>
+        </div>
+        
+        <p class="text-white/80 mb-4">Building performant mobile apps for iOS and Android with React Native and native technologies.</p>
+        
+        <div class="mb-4">
+          <span class="skill-tag">React Native</span>
+          <span class="skill-tag">Swift</span>
+          <span class="skill-tag">Kotlin</span>
+          <span class="skill-tag">Firebase</span>
+        </div>
+        
+        <div class="flex justify-end">
+          <button class="bg-green-500 hover:bg-green-600 transition px-4 py-2 rounded-lg font-semibold text-white">
+            Connect <i class="fa-solid fa-arrow-right ml-1"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Collaborator 6 -->
+      <div class="glass card-glow card-hover rounded-2xl p-6 collaborator-card" data-skills="Agile,Scrum,Jira,Team Leadership" data-expertise="Project Management" data-availability="Contract Basis">
+        <div class="flex items-start mb-4">
+          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-xl font-bold mr-4">AR</div>
+          <div>
+            <h3 class="text-xl font-bold">Aisha Rahman</h3>
+            <p class="text-blue-400">Project Manager</p>
+            <div class="flex items-center mt-1">
+              <span class="availability-dot available"></span>
+              <span class="text-sm">Available for consulting</span>
+            </div>
+          </div>
+        </div>
+        
+        <p class="text-white/80 mb-4">Agile expert with 12+ years experience leading tech teams and delivering complex projects on time.</p>
+        
+        <div class="mb-4">
+          <span class="skill-tag">Agile</span>
+          <span class="skill-tag">Scrum</span>
+          <span class="skill-tag">Jira</span>
+          <span class="skill-tag">Team Leadership</span>
+        </div>
+        
+        <div class="flex justify-end">
+          <button class="bg-green-500 hover:bg-green-600 transition px-4 py-2 rounded-lg font-semibold text-white">
+            Connect <i class="fa-solid fa-arrow-right ml-1"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Pagination -->
+    <div class="flex justify-center mt-12">
+      <nav class="glass rounded-xl p-2">
+        <ul class="flex gap-2">
+          <li><a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center bg-blue-600 text-white">1</a></li>
+          <li><a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-white/10">2</a></li>
+          <li><a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-white/10">3</a></li>
+          <li><a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-white/10">4</a></li>
+          <li><a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-white/10">Next</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <script>
+    // Filter functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const skillTags = document.querySelectorAll('.skill-tag');
+      const collaboratorCards = document.querySelectorAll('.collaborator-card');
+      const activeFiltersContainer = document.getElementById('active-filters');
+      const clearFiltersBtn = document.getElementById('clear-filters');
+      const applyFiltersBtn = document.getElementById('apply-filters');
+      const nameSearch = document.getElementById('name-search');
+      const expertiseFilter = document.getElementById('expertise-filter');
+      const availabilityFilter = document.getElementById('availability-filter');
+      
+      let selectedSkills = [];
+      let activeFilters = {
+        skills: [],
+        expertise: 'all',
+        availability: 'all',
+        name: ''
+      };
+      
+      // Skill tag selection
+      skillTags.forEach(tag => {
+        tag.addEventListener('click', function() {
+          const skill = this.dataset.skill;
+          
+          if (this.classList.contains('selected')) {
+            // Deselect skill
+            this.classList.remove('selected');
+            selectedSkills = selectedSkills.filter(s => s !== skill);
+          } else {
+            // Select skill
+            this.classList.add('selected');
+            selectedSkills.push(skill);
+          }
+          
+          updateActiveFilters();
+        });
+      });
+      
+      // Apply filters button
+      applyFiltersBtn.addEventListener('click', function() {
+        filterCollaborators();
+      });
+      
+      // Clear all filters
+      clearFiltersBtn.addEventListener('click', function() {
+        // Reset UI elements
+        skillTags.forEach(tag => tag.classList.remove('selected'));
+        nameSearch.value = '';
+        expertiseFilter.value = 'all';
+        availabilityFilter.value = 'all';
+        
+        // Reset filter state
+        selectedSkills = [];
+        activeFilters = {
+          skills: [],
+          expertise: 'all',
+          availability: 'all',
+          name: ''
+        };
+        
+        // Update UI
+        updateActiveFilters();
+        filterCollaborators();
+      });
+      
+      // Update active filters display
+      function updateActiveFilters() {
+        activeFilters.skills = [...selectedSkills];
+        activeFilters.name = nameSearch.value.trim();
+        activeFilters.expertise = expertiseFilter.value;
+        activeFilters.availability = availabilityFilter.value;
+        
+        // Clear active filters container
+        activeFiltersContainer.innerHTML = '<div class="text-sm font-medium mr-3">Active filters:</div>';
+        
+        // Add active filters
+        let hasFilters = false;
+        
+        // Skills
+        if (activeFilters.skills.length > 0) {
+          activeFilters.skills.forEach(skill => {
+            const chip = document.createElement('div');
+            chip.className = 'filter-chip';
+            chip.innerHTML = `${skill} <span class="remove" data-skill="${skill}">×</span>`;
+            activeFiltersContainer.appendChild(chip);
+            hasFilters = true;
+          });
+        }
+        
+        // Name
+        if (activeFilters.name) {
+          const chip = document.createElement('div');
+          chip.className = 'filter-chip';
+          chip.innerHTML = `Name: ${activeFilters.name} <span class="remove" data-type="name">×</span>`;
+          activeFiltersContainer.appendChild(chip);
+          hasFilters = true;
+        }
+        
+        // Expertise
+        if (activeFilters.expertise !== 'all') {
+          const chip = document.createElement('div');
+          chip.className = 'filter-chip';
+          chip.innerHTML = `Expertise: ${activeFilters.expertise} <span class="remove" data-type="expertise">×</span>`;
+          activeFiltersContainer.appendChild(chip);
+          hasFilters = true;
+        }
+        
+        // Availability
+        if (activeFilters.availability !== 'all') {
+          const chip = document.createElement('div');
+          chip.className = 'filter-chip';
+          chip.innerHTML = `Availability: ${activeFilters.availability} <span class="remove" data-type="availability">×</span>`;
+          activeFiltersContainer.appendChild(chip);
+          hasFilters = true;
+        }
+        
+        // Show/hide active filters container
+        activeFiltersContainer.style.display = hasFilters ? 'flex' : 'none';
+        
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.filter-chip .remove').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const filterType = this.dataset.type;
+            const skill = this.dataset.skill;
+            
+            if (skill) {
+              // Remove skill filter
+              selectedSkills = selectedSkills.filter(s => s !== skill);
+              document.querySelector(`.skill-tag[data-skill="${skill}"]`).classList.remove('selected');
+            } else if (filterType === 'name') {
+              // Remove name filter
+              nameSearch.value = '';
+            } else if (filterType === 'expertise') {
+              // Remove expertise filter
+              expertiseFilter.value = 'all';
+            } else if (filterType === 'availability') {
+              // Remove availability filter
+              availabilityFilter.value = 'all';
+            }
+            
+            updateActiveFilters();
+            filterCollaborators();
+          });
+        });
+      }
+      
+      // Filter collaborators based on active filters
+      function filterCollaborators() {
+        updateActiveFilters();
+        
+        collaboratorCards.forEach(card => {
+          const cardSkills = card.dataset.skills.split(',').map(s => s.trim());
+          const cardExpertise = card.dataset.expertise;
+          const cardAvailability = card.dataset.availability;
+          const cardName = card.querySelector('h3').textContent.toLowerCase();
+          
+          // Check if card matches all active filters
+          const matchesSkills = activeFilters.skills.length === 0 || 
+                               activeFilters.skills.some(skill => cardSkills.includes(skill));
+          
+          const matchesExpertise = activeFilters.expertise === 'all' || 
+                                  cardExpertise === activeFilters.expertise;
+          
+          const matchesAvailability = activeFilters.availability === 'all' || 
+                                     cardAvailability === activeFilters.availability;
+          
+          const matchesName = !activeFilters.name || 
+                             cardName.includes(activeFilters.name.toLowerCase());
+          
+          if (matchesSkills && matchesExpertise && matchesAvailability && matchesName) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+      
+      // Initialize page
+      filterCollaborators();
+      
+      // Add hover effects to cards
+      document.querySelectorAll('.collaborator-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.style.transform = 'translateY(-5px)';
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'translateY(0)';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
