@@ -1,164 +1,157 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Collaboration Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css"> </head>
-<body>
-    <div class="sidebar">
-        <div class="sidebar-header">
-            CollabHub
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SkillLink Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Outfit', sans-serif; }
+    .orb {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(32px);
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+      animation: float 12s ease-in-out infinite alternate;
+    }
+    .orb1 { width: 320px; height: 320px; background: #7f5af0; top: 5%; left: 12%; animation-delay: 0s;}
+    .orb2 { width: 240px; height: 240px; background: #2cb67d; top: 60%; left: 70%; animation-delay: 2s;}
+    .orb3 { width: 180px; height: 180px; background: #ff6e6c; top: 70%; left: 20%; animation-delay: 4s;}
+    @keyframes float {
+      0% { transform: translateY(0) scale(1);}
+      100% { transform: translateY(-40px) scale(1.07);}
+    }
+  </style>
+</head>
+<body class="relative bg-gradient-to-br from-[#0f172a] to-[#1e293b] min-h-screen text-white overflow-x-hidden">
+
+  <!-- 3D Animated Orbs Background -->
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="hidden md:flex flex-col w-72 bg-white/10 backdrop-blur-xl p-8 border-r border-white/10 shadow-2xl z-10">
+      <div class="flex items-center mb-12">
+        <i class="fa-solid fa-link text-3xl text-blue-400 mr-3"></i>
+        <span class="text-2xl font-bold tracking-wide bg-gradient-to-r from-blue-400 to-green-400 text-transparent bg-clip-text">SkillLink</span>
+      </div>
+      <div class="flex items-center mb-10 p-3 rounded-xl bg-white/10 border border-white/20">
+        <div class="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-green-400 flex items-center justify-center text-xl font-bold mr-3">AM</div>
+        <div>
+          <div class="font-semibold">Alex Morgan</div>
+          <div class="text-xs text-white/70">Knowledge Expert</div>
         </div>
-        <nav class="sidebar-nav">
-            <ul>
-                <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                <li><a href="#" data-section="chat"><i class="fas fa-comments"></i> Chat Box</a></li>
-                <li><a href="#" data-section="skills"><i class="fas fa-user-tie"></i> My Skills</a></li>
-                <li><a href="#" data-section="hire"><i class="fas fa-handshake"></i> Hire Talent</a></li>
-                <li><a href="#" data-section="knowledge"><i class="fas fa-lightbulb"></i> Knowledge Exchange</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
-                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-            </ul>
-        </nav>
-    </div>
+      </div>
+      <nav class="flex-1 flex flex-col gap-2">
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-600/80 font-semibold shadow hover:bg-blue-700 transition"><i class="fa-solid fa-house"></i>Dashboard</a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition"><i class="fa-solid fa-users"></i>Collaborators</a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition"><i class="fa-solid fa-lightbulb"></i>Knowledge Hub</a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition"><i class="fa-solid fa-rocket"></i>Projects</a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition"><i class="fa-solid fa-comments"></i>Discussions</a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition"><i class="fa-solid fa-gear"></i>Settings</a>
+      </nav>
+      <div class="mt-8">
+        <button onclick="logout()" class="w-full flex items-center justify-center gap-2 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-semibold text-white transition"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</button>
+      </div>
+      <div class="mt-8 text-xs text-white/40 text-center">SkillLink &copy; 2025</div>
+    </aside>
 
-    <div class="main-content">
-        <div class="header">
-            <h1>Welcome, John Doe!</h1>
-            <div class="user-profile">
-                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cfd46db9?ixlib=rb-1.2.1&auto=format&fit=crop&w=80&q=80" alt="User Avatar">
-                <span>John Doe</span>
-            </div>
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col p-6 md:p-12 relative z-10">
+      <!-- Top Bar -->
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-10">
+        <div class="w-full md:w-1/2">
+          <div class="relative">
+            <input type="text" placeholder="Search for experts, projects, topics..."
+                   class="w-full py-3 pl-12 pr-4 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-white/60"/>
+            <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></i>
+          </div>
         </div>
-
-        <div class="dashboard-grid">
-            <div class="card" id="chat">
-                <h2><i class="fas fa-comments"></i> Chat Box</h2>
-                <div class="card-content chat-box">
-                    <div class="chat-messages">
-                        <div class="chat-message other"><strong>Alice:</strong> Hey everyone, who's online?</div>
-                        <div class="chat-message self"><strong>You:</strong> I am! What's up?</div>
-                        <div class="chat-message other"><strong>Bob:</strong> Just checking in. Anyone available for a quick brainstorming session?</div>
-                        <div class="chat-message self"><strong>You:</strong> I could join in 15 mins. What's the topic?</div>
-                        <div class="chat-message other"><strong>Alice:</strong> We're discussing the new project requirements for the mobile app.</div>
-                        <div class="chat-message self"><strong>You:</strong> Great, I'll be there!</div>
-                        <div class="chat-message other"><strong>Charlie:</strong> Count me in too, I'm interested in the mobile app discussion.</div>
-                        <div class="chat-message self"><strong>You:</strong> Awesome, the more the merrier!</div>
-                        <div class="chat-message other"><strong>Alice:</strong> Perfect, let's meet in the 'Project Brainstorm' channel.</div>
-                    </div>
-                    <div class="chat-input">
-                        <input type="text" placeholder="Type your message...">
-                        <button><i class="fas fa-paper-plane"></i> Send</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" id="skills">
-                <h2><i class="fas fa-user-tie"></i> My Skills</h2>
-                <div class="card-content">
-                    <div class="skill-list">
-                        <div class="skill-item">
-                            <span>Web Development (React)</span>
-                            <span>Expert</span>
-                        </div>
-                        <div class="skill-item">
-                            <span>UI/UX Design (Figma)</span>
-                            <span>Intermediate</span>
-                        </div>
-                        <div class="skill-item">
-                            <span>Project Management (Agile)</span>
-                            <span>Advanced</span>
-                        </div>
-                        <div class="skill-item">
-                            <span>Python Programming</span>
-                            <span>Expert</span>
-                        </div>
-                        <div class="skill-item">
-                            <span>Database Management (SQL)</span>
-                            <span>Intermediate</span>
-                        </div>
-                        <div class="skill-item">
-                            <span>Cloud Computing (AWS)</span>
-                            <span>Beginner</span>
-                        </div>
-                    </div>
-                    <button class="action-button"><i class="fas fa-plus-circle"></i> Add New Skill</button>
-                </div>
-            </div>
-
-            <div class="card" id="hire">
-                <h2><i class="fas fa-handshake"></i> Hire Talent</h2>
-                <div class="card-content">
-                    <div class="listing-container">
-                        <div class="item-listing">
-                            <h3>Front-End React Developer Needed</h3>
-                            <p>Seeking an experienced React developer for a 3-month project to build interactive user interfaces for our new SaaS platform.</p>
-                            <div class="tags">
-                                <span>#ReactJS</span>
-                                <span>#JavaScript</span>
-                                <span>#Frontend</span>
-                                <span>#SaaS</span>
-                            </div>
-                            <button class="listing-button"><i class="fas fa-arrow-alt-circle-right"></i> View Details</button>
-                        </div>
-                        <div class="item-listing">
-                            <h3>Freelance Graphic Designer for Brand Identity</h3>
-                            <p>Looking for a creative graphic designer to develop a new brand identity, including logo, color palette, and style guide for a startup.</p>
-                            <div class="tags">
-                                <span>#GraphicDesign</span>
-                                <span>#Branding</span>
-                                <span>#AdobeSuite</span>
-                                <span>#LogoDesign</span>
-                            </div>
-                            <button class="listing-button"><i class="fas fa-arrow-alt-circle-right"></i> View Details</button>
-                        </div>
-                        <div class="item-listing">
-                            <h3>Mobile App Backend Engineer (Node.js)</h3>
-                            <p>We need a skilled backend engineer to build robust APIs and database structures for our upcoming cross-platform mobile application.</p>
-                            <div class="tags">
-                                <span>#NodeJS</span>
-                                <span>#Express</span>
-                                <span>#MongoDB</span>
-                                <span>#API</span>
-                            </div>
-                            <button class="listing-button"><i class="fas fa-arrow-alt-circle-right"></i> View Details</button>
-                        </div>
-                    </div>
-                    <button class="action-button blue"><i class="fas fa-plus-circle"></i> Post a New Project</button>
-                </div>
-            </div>
-
-            <div class="card" id="knowledge">
-                <h2><i class="fas fa-lightbulb"></i> Knowledge Exchange</h2>
-                <div class="card-content">
-                    <div class="listing-container">
-                        <div class="item-listing">
-                            <h3>Understanding RESTful APIs Best Practices</h3>
-                            <p>A comprehensive guide on designing and implementing robust RESTful APIs, covering authentication, versioning, and error handling.</p>
-                            <div class="author-info">Posted by Jane Smith - 2 hours ago</div>
-                            <button class="listing-button purple"><i class="fas fa-eye"></i> View Discussion</button>
-                        </div>
-                        <div class="item-listing">
-                            <h3>Introduction to Machine Learning with Python</h3>
-                            <p>Exploring the basics of machine learning, common algorithms, and how to get started with Python's scikit-learn library.</p>
-                            <div class="author-info">Posted by Alex Lee - 1 day ago</div>
-                            <button class="listing-button purple"><i class="fas fa-eye"></i> View Discussion</button>
-                        </div>
-                        <div class="item-listing">
-                            <h3>CSS Grid vs. Flexbox: When to Use Which?</h3>
-                            <p>A detailed comparison of CSS Grid and Flexbox, helping you decide the best layout tool for your specific web development needs.</p>
-                            <div class="author-info">Posted by Sarah Connor - 3 days ago</div>
-                            <button class="listing-button purple"><i class="fas fa-eye"></i> View Discussion</button>
-                        </div>
-                    </div>
-                    <button class="action-button purple"><i class="fas fa-plus-circle"></i> Share Knowledge</button>
-                </div>
-            </div>
+        <div class="flex gap-4">
+          <button class="relative w-12 h-12 rounded-full bg-white/10 hover:bg-blue-600 transition flex items-center justify-center text-xl">
+            <i class="fa-solid fa-bell"></i>
+            <span class="absolute -top-1 -right-1 bg-red-600 text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
+          </button>
+          <button class="relative w-12 h-12 rounded-full bg-white/10 hover:bg-blue-600 transition flex items-center justify-center text-xl">
+            <i class="fa-solid fa-envelope"></i>
+            <span class="absolute -top-1 -right-1 bg-green-500 text-xs w-5 h-5 rounded-full flex items-center justify-center">7</span>
+          </button>
+          <button class="relative w-12 h-12 rounded-full bg-white/10 hover:bg-blue-600 transition flex items-center justify-center text-xl">
+            <i class="fa-solid fa-user"></i>
+          </button>
         </div>
-    </div>
+      </div>
 
-    <script src="script.js"></script> </body>
+      <!-- Feature Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+        <!-- Card 1 -->
+        <div class="bg-white/10 border border-white/20 rounded-2xl p-8 flex flex-col shadow-2xl backdrop-blur-xl hover:scale-[1.03] transition relative overflow-hidden">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-green-400 flex items-center justify-center text-2xl"><i class="fa-solid fa-users"></i></div>
+            <div class="font-bold text-xl">Find Collaborators</div>
+          </div>
+          <div class="text-white/70 mb-6 flex-1">Connect with experts worldwide who share your interests and skills. Filter by expertise, location, and availability.</div>
+          <button class="bg-blue-600 hover:bg-blue-700 transition px-6 py-2 rounded-lg font-semibold text-white flex items-center gap-2 self-start"><i class="fa-solid fa-search"></i>Explore Network</button>
+        </div>
+        <!-- Card 2 -->
+        <div class="bg-white/10 border border-white/20 rounded-2xl p-8 flex flex-col shadow-2xl backdrop-blur-xl hover:scale-[1.03] transition relative overflow-hidden">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-400 to-pink-400 flex items-center justify-center text-2xl"><i class="fa-solid fa-lightbulb"></i></div>
+            <div class="font-bold text-xl">Share Knowledge</div>
+          </div>
+          <div class="text-white/70 mb-6 flex-1">Contribute to our knowledge hub, share your expertise, and access insights from industry leaders.</div>
+          <button class="bg-yellow-400 hover:bg-yellow-500 text-black transition px-6 py-2 rounded-lg font-semibold flex items-center gap-2 self-start"><i class="fa-solid fa-plus"></i>Add Content</button>
+        </div>
+        <!-- Card 3 -->
+        <div class="bg-white/10 border border-white/20 rounded-2xl p-8 flex flex-col shadow-2xl backdrop-blur-xl hover:scale-[1.03] transition relative overflow-hidden">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-red-400 flex items-center justify-center text-2xl"><i class="fa-solid fa-rocket"></i></div>
+            <div class="font-bold text-xl">Start a Project</div>
+          </div>
+          <div class="text-white/70 mb-6 flex-1">Launch your next big idea with the perfect team. Our platform helps you find collaborators and manage projects.</div>
+          <button class="bg-pink-500 hover:bg-pink-600 transition px-6 py-2 rounded-lg font-semibold text-white flex items-center gap-2 self-start"><i class="fa-solid fa-plus"></i>Create Project</button>
+        </div>
+        <!-- Card 4 -->
+        <div class="bg-white/10 border border-white/20 rounded-2xl p-8 flex flex-col shadow-2xl backdrop-blur-xl hover:scale-[1.03] transition relative overflow-hidden">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-400 to-blue-400 flex items-center justify-center text-2xl"><i class="fa-solid fa-comments"></i></div>
+            <div class="font-bold text-xl">Join Discussions</div>
+          </div>
+          <div class="text-white/70 mb-6 flex-1">Participate in topic-specific forums, share ideas, and get feedback from our vibrant community.</div>
+          <button class="bg-green-500 hover:bg-green-600 transition px-6 py-2 rounded-lg font-semibold text-white flex items-center gap-2 self-start"><i class="fa-solid fa-arrow-right"></i>Browse Topics</button>
+        </div>
+        <!-- Card 5 -->
+        <div class="bg-white/10 border border-white/20 rounded-2xl p-8 flex flex-col shadow-2xl backdrop-blur-xl hover:scale-[1.03] transition relative overflow-hidden">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-2xl"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="font-bold text-xl">Track Progress</div>
+          </div>
+          <div class="text-white/70 mb-6 flex-1">Monitor your collaborations, knowledge contributions, and project milestones in one place.</div>
+          <button class="bg-purple-500 hover:bg-purple-600 transition px-6 py-2 rounded-lg font-semibold text-white flex items-center gap-2 self-start"><i class="fa-solid fa-chart-pie"></i>View Analytics</button>
+        </div>
+        <!-- Card 6 -->
+        <div class="bg-white/10 border border-white/20 rounded-2xl p-8 flex flex-col shadow-2xl backdrop-blur-xl hover:scale-[1.03] transition relative overflow-hidden">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-400 to-pink-400 flex items-center justify-center text-2xl"><i class="fa-solid fa-trophy"></i></div>
+            <div class="font-bold text-xl">Earn Recognition</div>
+          </div>
+          <div class="text-white/70 mb-6 flex-1">Gain reputation points for your contributions and unlock exclusive opportunities and features.</div>
+          <button class="bg-yellow-400 hover:bg-yellow-500 text-black transition px-6 py-2 rounded-lg font-semibold flex items-center gap-2 self-start"><i class="fa-solid fa-award"></i>View Achievements</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function logout() {
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
 </html>
