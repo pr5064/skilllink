@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projects | SkillLink</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.13);
+      backdrop-filter: blur(24px);
+      border: 1.5px solid rgba(255,255,255,0.18);
+      box-shadow: 0 8px 40px 0 rgba(127,90,240,0.13), 0 1.5px 6px 0 rgba(0,0,0,0.09);
+    }
+    .card-hover:hover {
+      transform: translateY(-8px) scale(1.025);
+      box-shadow: 0 16px 48px 0 rgba(127,90,240,0.22), 0 2px 12px 0 rgba(0,0,0,0.10);
+      border-color: #7f5af0;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #7f5af0, #2cb67d, #ff6e6c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-[#18122b] via-[#7f5af0] to-[#2cb67d] min-h-screen text-white">
+
+  <!-- Top Bar -->
+  <header class="flex justify-between items-center p-6">
+    <div class="flex items-center gap-3">
+      <i class="fa-solid fa-diagram-project text-2xl text-yellow-400"></i>
+      <span class="text-2xl font-extrabold tracking-wide gradient-text">Project Collaboration</span>
+    </div>
+    <a href="dashboard.html" class="flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-white transition">
+      <i class="fa-solid fa-arrow-left"></i> Dashboard
+    </a>
+  </header>
+
+  <!-- Form to Post Project -->
+  <main class="max-w-2xl mx-auto mt-4 p-6 glass rounded-2xl shadow-lg">
+    <h1 class="text-3xl font-bold mb-2 gradient-text">Post Your Project Idea</h1>
+    <p class="text-white/70 mb-8">Share your project idea and the skills required. If people like it, they can send you a collaboration request!</p>
+    <form id="projectForm" class="space-y-6">
+      <div>
+        <label class="block font-semibold mb-2" for="poster">Your Name</label>
+        <input id="poster" name="poster" type="text" required autofocus class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-yellow-400 text-white" placeholder="Who is posting this project?">
+      </div>
+      <div>
+        <label class="block font-semibold mb-2" for="idea">Project Idea</label>
+        <textarea id="idea" name="idea" rows="2" required class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-yellow-400 text-white" placeholder="Describe your project..."></textarea>
+      </div>
+      <div>
+        <label class="block font-semibold mb-2" for="skillsInput">Skills Needed</label>
+        <input id="skillsInput" type="text" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-400 text-white" placeholder="Type a skill and press Enter">
+        <div id="skillsTags" class="mt-2 flex flex-wrap"></div>
+      </div>
+      <button type="submit" class="w-full py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-bold rounded-lg transition">Post Project</button>
+    </form>
+  </main>
+
+  <!-- Project List -->
+  <section class="max-w-2xl mx-auto mt-10 p-6 glass rounded-2xl shadow-lg">
+    <h2 class="text-2xl font-bold mb-4 gradient-text">Open Projects</h2>
+    <div id="projectsList" class="space-y-6"></div>
+  </section>
+
+  <!-- JavaScript -->
+  <script>
+    let skills = [];
+    const skillsInput = document.getElementById('skillsInput');
+    const skillsTags = document.getElementById('skillsTags');
+
+    skillsInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && this.value.trim()) {
+        e.preventDefault();
+        const skill = this.value.trim();
+        if (!skills.includes(skill)) {
+          skills.push(skill);
+          renderSkills();
+        }
+        this.value = '';
+      }
+    });
+
+    function removeSkill(skill) {
+      skills = skills.filter(s => s !== skill);
+      renderSkills();
+    }
+
+    function renderSkills() {
+      skillsTags.innerHTML = '';
+      skills.forEach(skill => {
+        const tag = document.createElement('span');
+        tag.className = 'inline-block bg-blue-600 text-white text-xs px-3 py-1 rounded-full mr-2 mb-2';
+        tag.innerHTML = `${skill} <span class="ml-2 text-red-400 cursor-pointer" onclick="removeSkill('${skill}')">&times;</span>`;
+        skillsTags.appendChild(tag);
+      });
+    }
+
+    let projects = [];
+
+    document.getElementById('projectForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const poster = document.getElementById('poster').value.trim();
+      const idea = document.getElementById('idea').value.trim();
+      if (poster && idea && skills.length > 0) {
+        projects.push({
+          poster,
+          idea,
+          skills: [...skills],
+          requests: []
+        });
+        renderProjects();
+        this.reset();
+        skills = [];
+        renderSkills();
+      }
+    });
+
+    function renderProjects() {
+      const list = document.getElementById('projectsList');
+      list.innerHTML = '';
+      if (projects.length === 0) {
+        list.innerHTML = '<div class="text-white/60">No projects posted yet. Be the first to share an idea!</div>';
+        return;
+      }
+      projects.slice().reverse().forEach((proj, idx) => {
+        const card = document.createElement('div');
+        card.className = 'glass card-hover p-6 rounded-2xl border border-white/10 flex flex-col md:flex-row gap-4 items-start md:items-center';
+        card.innerHTML = `
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="font-bold text-xl gradient-text">${proj.idea}</span>
+            </div>
+            <div class="mb-2 text-white/80">By: <span class="font-semibold text-blue-300">${proj.poster}</span></div>
+            <div class="mb-2">
+              ${proj.skills.map(skill => `<span class="inline-block bg-green-600 text-white text-xs px-3 py-1 rounded-full mr-2 mb-1">${skill}</span>`).join('')}
+            </div>
+            <div class="mt-2 text-xs text-yellow-300">${proj.requests.length} collaboration request${proj.requests.length !== 1 ? 's' : ''}</div>
+          </div>
+          <button class="px-5 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition text-base" onclick="sendRequest(${projects.length - 1 - idx}, this)">Request to Collaborate</button>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    function sendRequest(idx, btn) {
+      const name = prompt('Enter your name to send a collaboration request:');
+      if (name && name.trim()) {
+        projects[idx].requests.push(name.trim());
+        btn.disabled = true;
+        btn.textContent = 'Request Sent!';
+        renderProjects();
+      }
+    }
+
+    window.removeSkill = removeSkill;
+    window.sendRequest = sendRequest;
+    renderProjects();
+  </script>
+</body>
+</html>
