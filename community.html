@@ -3,345 +3,221 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Community Forums | SkillLink</title>
+  <title>SkillLink Forums | New UI</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/heroicons@2.1.1/24/outline/index.min.js"></script>
   <style>
+    :root {
+      --bg-dark: #111827;      /* Dark Slate Blue */
+      --surface: #1f2937;      /* Lighter Slate */
+      --primary: #06b6d4;      /* Cyan */
+      --primary-hover: #0891b2;/* Darker Cyan */
+      --text-main: #f9fafb;    /* Almost White */
+      --text-secondary: #9ca3af;/* Gray */
+      --border: #374151;      /* Lighter Gray Border */
+    }
+
     body {
       font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
       min-height: 100vh;
-      margin: 0;
-      background: linear-gradient(120deg, #181825 0%, #6366f1 100%);
-      color: #fff;
       overflow-x: hidden;
     }
-    /* Animated gradient background */
-    .animated-bg {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 0;
-      background: linear-gradient(120deg, #181825 0%, #6366f1 100%);
-      overflow: hidden;
+
+    /* A more subtle, clean "surface" effect instead of glass */
+    .surface-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 1rem; /* 16px */
     }
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0.18;
-      filter: blur(32px);
-      animation: float 16s ease-in-out infinite alternate;
-      z-index: 0;
-    }
-    .blob1 { width: 420px; height: 420px; background: #fbbf24; left: -120px; top: 60px; animation-delay: 0s;}
-    .blob2 { width: 320px; height: 320px; background: #06b6d4; right: -120px; top: 180px; animation-delay: 4s;}
-    .blob3 { width: 260px; height: 260px; background: #a21caf; left: 42vw; bottom: -100px; animation-delay: 8s;}
-    @keyframes float {
-      0% { transform: translateY(0) scale(1);}
-      100% { transform: translateY(-40px) scale(1.08);}
-    }
-    .forum-header {
-      position: relative;
-      z-index: 2;
-      background: rgba(30,41,59,0.85);
-      border-bottom: 1.5px solid #6366f1;
-      box-shadow: 0 4px 24px #6366f133;
-    }
-    .discussion-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-      gap: 2.2rem;
-    }
-    .discussion-card {
-      background: rgba(255,255,255,0.10);
-      border-radius: 1.4rem;
-      box-shadow: 0 4px 32px #6366f122;
-      border: 1.5px solid rgba(99,102,241,0.13);
-      padding: 2.1rem 1.6rem 1.3rem 1.6rem;
-      position: relative;
-      transition: transform 0.16s, box-shadow 0.16s, border 0.16s;
-      cursor: pointer;
-      overflow: hidden;
-    }
-    .discussion-card:hover {
-      transform: translateY(-8px) scale(1.03);
-      box-shadow: 0 10px 40px #fbbf2433, 0 2px 0 #06b6d4;
-      border: 1.5px solid #fbbf24;
-      z-index: 3;
-    }
-    .avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #06b6d4 0%, #a21caf 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 1.1rem;
-      color: #fff;
-      box-shadow: 0 2px 8px #a21caf22;
-      margin-bottom: 0.6rem;
-    }
-    .topic-chip {
-      background: linear-gradient(90deg, #fbbf24 0%, #06b6d4 100%);
-      color: #1e293b;
-      font-weight: 700;
-      font-size: 0.85rem;
-      border-radius: 999px;
-      padding: 0.3rem 1.1rem;
-      margin-bottom: 0.7rem;
-      display: inline-block;
-      box-shadow: 0 2px 8px #fbbf2422;
-    }
-    .card-content {
-      color: #f1f5f9;
-      font-size: 1.12rem;
+
+    /* Main button style */
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      border-radius: 9999px;
+      padding: 0.625rem 1.25rem; /* 10px 20px */
       font-weight: 500;
-      margin-bottom: 1.1rem;
-      min-height: 52px;
-      line-height: 1.5;
+      transition: background-color 0.2s ease-in-out;
+      display: inline-block;
+      text-align: center;
     }
-    .card-actions {
-      display: flex;
-      gap: 1.2rem;
-      align-items: center;
-      margin-top: 0.4rem;
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
     }
-    .card-actions button {
-      background: none;
-      border: none;
-      color: #fbbf24;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      transition: color 0.14s;
+    
+    /* Input field styling */
+    .form-input {
+        background-color: #374151; /* bg-gray-700 */
+        color: var(--text-main);
+        border: 1px solid var(--border);
+        border-radius: 0.5rem; /* 8px */
+        width: 100%;
+        padding: 0.75rem 1rem; /* 12px 16px */
+        transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .card-actions button:hover {
-      color: #06b6d4;
+
+    .form-input::placeholder {
+        color: var(--text-secondary);
     }
-    .fab {
-      position: fixed;
-      bottom: 2.5rem;
-      right: 2.5rem;
-      z-index: 30;
-      background: linear-gradient(120deg, #fbbf24 0%, #a21caf 100%);
-      color: #fff;
-      font-weight: 700;
-      border: none;
-      border-radius: 50%;
-      width: 64px;
-      height: 64px;
-      font-size: 2rem;
-      box-shadow: 0 8px 32px #a21caf33;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.17s, box-shadow 0.17s;
+
+    .form-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.3);
     }
-    .fab:hover {
-      background: linear-gradient(120deg, #a21caf 0%, #fbbf24 100%);
-      box-shadow: 0 16px 48px #fbbf2444;
-    }
-    .modal-bg {
-      background: rgba(30,41,59,0.65);
-      backdrop-filter: blur(6px);
-      position: fixed;
-      inset: 0;
-      z-index: 40;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.18s;
-    }
-    .modal {
-      background: #232946;
-      border-radius: 1.4rem;
-      box-shadow: 0 8px 36px #7f5af022;
-      padding: 2.3rem 2rem 2rem 2rem;
-      max-width: 440px;
-      width: 100%;
-      position: relative;
-      animation: modalIn 0.22s cubic-bezier(.6,.05,.28,1.08);
-      color: #f1f5f9;
-    }
-    @keyframes modalIn {
-      from { transform: translateY(30px) scale(0.98); opacity: 0.5; }
-      to { transform: none; opacity: 1; }
-    }
-    .modal-close {
-      position: absolute;
-      right: 1.2rem;
-      top: 1.1rem;
-      color: #fbbf24;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      opacity: 0.7;
-      transition: opacity 0.12s;
-    }
-    .modal-close:hover { opacity: 1; }
-    .emoji-picker {
-      font-size: 1.3rem;
-      cursor: pointer;
-      margin-right: 0.6rem;
-      opacity: 0.85;
-      transition: opacity 0.13s;
-    }
-    .emoji-picker:hover { opacity: 1; }
-    @media (max-width: 900px) {
-      .discussion-grid { grid-template-columns: 1fr; }
-      .fab { right: 1.2rem; bottom: 1.2rem; width: 52px; height: 52px; font-size: 1.3rem;}
-    }
-    @media (max-width: 600px) {
-      .modal { padding: 1.2rem 0.7rem 1.2rem 0.7rem; }
-    }
+
   </style>
 </head>
-<body>
-  <!-- Animated background blobs -->
-  <div class="animated-bg">
-    <div class="blob blob1"></div>
-    <div class="blob blob2"></div>
-    <div class="blob blob3"></div>
-  </div>
-
-  <!-- Header -->
-  <header class="forum-header flex justify-between items-center px-8 py-5">
+<body class="relative px-4 py-6">
+  <header class="surface-card max-w-5xl mx-auto px-6 py-4 mb-8 flex justify-between items-center">
     <div class="flex items-center gap-3">
-      <i class="fa-solid fa-comments text-2xl text-yellow-400"></i>
-      <h1 class="text-2xl font-extrabold tracking-wide gradient-text">Community Forums</h1>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-cyan-400">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.482L7 21l4.5-4.5L12 20.25Z" />
+        </svg>
+        <h1 class="text-2xl font-bold text-white">SkillLink Forums</h1>
     </div>
-    <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg font-semibold text-white transition">
-      <i class="fa-solid fa-arrow-left"></i> Dashboard
-    </a>
+    <a href="dashboard.html" class="btn-primary text-sm hidden sm:block">Back to Dashboard</a>
   </header>
 
-  <!-- Forum Feed -->
-  <main class="max-w-6xl mx-auto px-6 pb-24 relative z-10">
-    <h2 class="text-3xl font-bold mb-10 gradient-text">Latest Discussions</h2>
-    <div id="postsContainer" class="discussion-grid"></div>
+  <main class="max-w-4xl mx-auto">
+    <div id="postsContainer" class="grid gap-6"></div>
+    <button id="openModalBtn" class="fixed bottom-6 right-6 bg-cyan-500 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-50 hover:bg-cyan-600 hover:scale-105 transition-transform">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+    </button>
   </main>
 
-  <!-- Floating Action Button -->
-  <button class="fab" id="openModalBtn" title="Start a Discussion">
-    <i class="fa-solid fa-plus"></i>
-  </button>
-
-  <!-- Modal (hidden by default) -->
-  <div id="modalBg" class="modal-bg" style="display:none;">
-    <form id="forumForm" class="modal">
-      <button type="button" class="modal-close" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
-      <h2 class="text-2xl font-bold mb-4 gradient-text">Start a New Discussion</h2>
-      <div class="mb-4">
-        <label for="username" class="block mb-2 font-semibold text-blue-400">Your Name</label>
-        <input id="username" required class="w-full rounded-lg bg-white/10 border border-white/30 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter your name" autocomplete="off"/>
-      </div>
-      <div class="mb-4">
-        <label for="topic" class="block mb-2 font-semibold text-green-400">Choose Topic</label>
-        <select id="topic" class="w-full rounded-lg bg-white/10 border border-white/30 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400">
-          <option>Python</option>
-          <option>Web Development</option>
-          <option>UI/UX Design</option>
-          <option>Machine Learning</option>
-          <option>Cloud Computing</option>
-          <option>Career & Growth</option>
-          <option>General Discussion</option>
+  <div id="modalBg" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-40 hidden p-4">
+    <form id="forumForm" class="surface-card max-w-lg w-full rounded-2xl p-6 relative">
+      <button type="button" id="closeModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-white">&times;</button>
+      <h2 class="text-xl font-bold text-white mb-6">Start a New Discussion</h2>
+      <div class="space-y-4">
+        <input id="username" required placeholder="Your Name" class="form-input" />
+        <select id="topic" class="form-input appearance-none">
+          <option disabled selected>Select a Topic</option>
+          <option>Python</option><option>Web Development</option>
+          <option>Machine Learning</option><option>UI/UX Design</option>
+          <option>Career & Growth</option><option>General</option>
         </select>
+        <textarea id="postContent" rows="4" required placeholder="What's on your mind?" class="form-input"></textarea>
       </div>
-      <div class="mb-5 flex items-center">
-        <span class="emoji-picker" title="Add emoji" onclick="document.getElementById('postContent').value += '😊'">😊</span>
-        <span class="emoji-picker" title="Add emoji" onclick="document.getElementById('postContent').value += '🚀'">🚀</span>
-        <span class="emoji-picker" title="Add emoji" onclick="document.getElementById('postContent').value += '🤔'">🤔</span>
-        <span class="emoji-picker" title="Add emoji" onclick="document.getElementById('postContent').value += '👏'">👏</span>
-        <textarea id="postContent" rows="2" required class="flex-1 rounded-lg bg-white/10 border border-white/30 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 ml-2" placeholder="Type your message, idea, or question..."></textarea>
-      </div>
-      <button type="submit" class="w-full py-3 bg-gradient-to-r from-yellow-400 to-pink-400 hover:from-yellow-500 hover:to-pink-500 text-black font-bold rounded-lg transition">Post to Forum</button>
+      <button type="submit" class="btn-primary w-full mt-6">Post Discussion</button>
     </form>
   </div>
 
   <script>
-    const posts = [
-      { username: "Aisha", topic: "Python", content: "What's the best way to learn Python for data science? 😊", likes: 2 },
-      { username: "Rahul", topic: "Web Development", content: "Share your favorite CSS frameworks and why you love them! 🚀", likes: 1 }
-    ];
+    const posts = [];
 
-    const postsContainer = document.getElementById('postsContainer');
-    const openModalBtn = document.getElementById('openModalBtn');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const modalBg = document.getElementById('modalBg');
-    const forumForm = document.getElementById('forumForm');
+    const modalBg = document.getElementById("modalBg");
+    const openModalBtn = document.getElementById("openModalBtn");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const forumForm = document.getElementById("forumForm");
+    const postsContainer = document.getElementById("postsContainer");
+
+    openModalBtn.onclick = () => { modalBg.classList.remove("hidden"); };
+    closeModalBtn.onclick = () => { modalBg.classList.add("hidden"); };
+    modalBg.onclick = (e) => { if (e.target === modalBg) modalBg.classList.add("hidden"); };
 
     function getInitials(name) {
-      return name.trim().split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+      return name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
     }
 
     function renderPosts() {
-      postsContainer.innerHTML = '';
-      if (posts.length === 0) {
-        postsContainer.innerHTML = '<p class="text-slate-300">No discussions yet. Be the first to start!</p>';
+      postsContainer.innerHTML = "";
+      if (!posts.length) {
+        postsContainer.innerHTML = `<div class="text-center text-gray-400 surface-card p-10">
+            <h3 class="text-lg font-medium">No Discussions Yet</h3>
+            <p>Be the first to start a conversation by clicking the '+' button.</p>
+        </div>`;
         return;
       }
-      posts.slice().reverse().forEach((post, idx) => {
-        const postCard = document.createElement('div');
-        postCard.className = 'discussion-card';
-        postCard.innerHTML = `
-          <div class="avatar">${getInitials(post.username)}</div>
-          <div class="topic-chip">${post.topic}</div>
-          <div class="card-content">${post.content}</div>
-          <div class="card-actions">
-            <button class="like-button" data-idx="${posts.length-1-idx}">
-              <i class="fa-regular fa-thumbs-up"></i> <span class="like-count">${post.likes || 0}</span>
+      
+      const reversedPosts = [...posts].reverse();
+
+      reversedPosts.forEach((post, i) => {
+        // Since we reversed the array, we need the original index for actions
+        const originalIndex = posts.length - 1 - i;
+
+        const div = document.createElement("div");
+        div.className = "surface-card p-5 text-white";
+        div.innerHTML = `
+          <div class="flex items-center gap-3 mb-4">
+            <div class="bg-gray-700 w-10 h-10 flex items-center justify-center rounded-full font-bold text-cyan-400">${getInitials(post.username)}</div>
+            <div>
+              <p class="font-bold">${post.username}</p>
+              <span class="text-xs text-cyan-400 bg-cyan-900/50 px-2 py-0.5 rounded-full">${post.topic}</span>
+            </div>
+          </div>
+          <p class="mb-4 text-gray-200">${post.content}</p>
+          <div class="flex items-center gap-5 text-sm text-gray-400">
+            <button onclick="likePost(${originalIndex})" class="flex items-center gap-1 hover:text-yellow-400 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M1 8.25a1.25 1.25 0 1 1 2.5 0v7.5a1.25 1.25 0 1 1-2.5 0v-7.5ZM11 3V1.7c0-.268.14-.516.372-.661a.751.751 0 0 1 .821.062l1.983 1.636a.75.75 0 0 1 .324.622v10.518A2.25 2.25 0 0 1 12.25 17c-1.09.08-2.16-.322-2.924-1.085l-.04-.041a12.33 12.33 0 0 1-2.263-3.112Zm3.5 0v-1.35a.75.75 0 0 0-1.002-.705L12 2.25v12.215c.353.13.724.204 1.102.204a.75.75 0 0 0 .75-.75V3.5Z"/></svg>
+                <span>${post.likes}</span>
             </button>
-            <button class="reply-button">
-              <i class="fa-regular fa-comment"></i> Reply
+            <button onclick="replyPost(${originalIndex})" class="flex items-center gap-1 hover:text-cyan-400 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10 2a.75.75 0 0 1 .75.75v6.5h3.75a.75.75 0 0 1 0 1.5h-3.75v3.75a.75.75 0 0 1-1.5 0v-3.75H5.5a.75.75 0 0 1 0-1.5h3.75v-6.5A.75.75 0 0 1 10 2Z" clip-rule="evenodd" /><path d="M3 10a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 10Z" /></svg>
+                Reply
+            </button>
+            <button onclick="deletePost(${originalIndex})" class="ml-auto flex items-center gap-1 hover:text-red-400 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-1.157.046-2.17.316-3.02.748a.75.75 0 1 0 .64 1.364C4.293 6.002 5.034 5.75 6 5.75h8c.966 0 1.707.252 2.38.605a.75.75 0 0 0 .64-1.364c-.85-.432-1.863-.702-3.02-.748V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM6.56 8.53a.75.75 0 0 0-1.12 1.004l1.97 2.216a.75.75 0 0 0 1.12-1.004l-1.97-2.216Zm6.94 0-1.97 2.216a.75.75 0 0 0 1.12 1.004l1.97-2.216a.75.75 0 0 0-1.12-1.004ZM7.5 16a1.5 1.5 0 0 1-1.5-1.5V9.75a.75.75 0 0 1 1.5 0v4.75a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5V9.75a.75.75 0 0 1 1.5 0v4.75a1.5 1.5 0 0 1-1.5 1.5h-3Z" clip-rule="evenodd" /></svg>
             </button>
           </div>
+          ${post.replies.length > 0 ? `
+            <div class="mt-4 pt-4 border-t border-gray-700 space-y-3 text-sm text-gray-300">
+                ${post.replies.map(r => `<div class="ml-5 pl-4 border-l-2 border-cyan-700">${r}</div>`).join("")}
+            </div>` : ''
+          }
         `;
-        postsContainer.appendChild(postCard);
-      });
-
-      document.querySelectorAll('.like-button').forEach(button => {
-        button.addEventListener('click', function() {
-          const idx = +button.getAttribute('data-idx');
-          posts[idx].likes = (posts[idx].likes || 0) + 1;
-          renderPosts();
-        });
-      });
-
-      document.querySelectorAll('.reply-button').forEach((button, i) => {
-        button.addEventListener('click', function() {
-          alert('Reply feature coming soon!');
-        });
+        postsContainer.appendChild(div);
       });
     }
 
-    // Modal logic
-    openModalBtn.onclick = () => { modalBg.style.display = 'flex'; setTimeout(()=>{document.getElementById('username').focus()}, 100)};
-    closeModalBtn.onclick = () => { modalBg.style.display = 'none'; };
-    modalBg.onclick = e => { if(e.target === modalBg) modalBg.style.display = 'none'; };
-    document.addEventListener('keydown', e => {
-      if (e.key === "Escape") modalBg.style.display = 'none';
-    });
+    function likePost(index) {
+      // The index is now correct
+      posts[index].likes++;
+      renderPosts();
+    }
 
-    forumForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const username = document.getElementById('username').value.trim() || "Anonymous";
-      const topic = document.getElementById('topic').value;
-      const content = document.getElementById('postContent').value.trim();
-      if (content) {
-        posts.push({ username, topic, content, likes: 0 });
+    function replyPost(index) {
+      const reply = prompt("Your reply:");
+      if (reply) {
+        posts[index].replies.push(reply.trim());
         renderPosts();
-        forumForm.reset();
-        modalBg.style.display = 'none';
       }
-    });
+    }
 
+    function deletePost(index) {
+      if (confirm("Are you sure you want to delete this discussion?")) {
+        // Need to find the correct post to splice since we display in reverse
+        posts.splice(index, 1);
+        renderPosts();
+      }
+    }
+
+    forumForm.onsubmit = (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value.trim() || "Anonymous";
+      const topic = document.getElementById("topic").value;
+      const content = document.getElementById("postContent").value.trim();
+      
+      if (!content || topic === "Select a Topic") {
+          alert("Please fill out all fields.");
+          return;
+      }
+
+      posts.push({ username, topic, content, likes: 0, replies: [] });
+      forumForm.reset();
+      modalBg.classList.add("hidden");
+      renderPosts();
+    };
+
+    // Initial render
     renderPosts();
   </script>
 </body>
