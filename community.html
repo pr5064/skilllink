@@ -10,165 +10,339 @@
   <style>
     body {
       font-family: 'Outfit', sans-serif;
-      background: linear-gradient(135deg, #232946 0%, #7f5af0 100%);
-      color: #fff;
       min-height: 100vh;
       margin: 0;
+      background: linear-gradient(120deg, #181825 0%, #6366f1 100%);
+      color: #fff;
+      overflow-x: hidden;
     }
-    .glass {
-      background: rgba(255,255,255,0.11);
-      backdrop-filter: blur(22px);
-      border: 1.5px solid rgba(255,255,255,0.12);
-      box-shadow: 0 8px 40px 0 rgba(127,90,240,0.15), 0 1.5px 6px 0 rgba(0,0,0,0.09);
-      border-radius: 1rem;
+    /* Animated gradient background */
+    .animated-bg {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      background: linear-gradient(120deg, #181825 0%, #6366f1 100%);
+      overflow: hidden;
     }
-    .card-hover:hover {
-      transform: translateY(-6px) scale(1.018);
-      box-shadow: 0 16px 48px 0 rgba(127,90,240,0.18), 0 2px 12px 0 rgba(0,0,0,0.11);
-      border-color: #7f5af0;
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.18;
+      filter: blur(32px);
+      animation: float 16s ease-in-out infinite alternate;
+      z-index: 0;
     }
-    .gradient-text {
-      background: linear-gradient(90deg, #7f5af0, #2cb67d, #ff6e6c);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 800;
+    .blob1 { width: 420px; height: 420px; background: #fbbf24; left: -120px; top: 60px; animation-delay: 0s;}
+    .blob2 { width: 320px; height: 320px; background: #06b6d4; right: -120px; top: 180px; animation-delay: 4s;}
+    .blob3 { width: 260px; height: 260px; background: #a21caf; left: 42vw; bottom: -100px; animation-delay: 8s;}
+    @keyframes float {
+      0% { transform: translateY(0) scale(1);}
+      100% { transform: translateY(-40px) scale(1.08);}
+    }
+    .forum-header {
+      position: relative;
+      z-index: 2;
+      background: rgba(30,41,59,0.85);
+      border-bottom: 1.5px solid #6366f1;
+      box-shadow: 0 4px 24px #6366f133;
+    }
+    .discussion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+      gap: 2.2rem;
+    }
+    .discussion-card {
+      background: rgba(255,255,255,0.10);
+      border-radius: 1.4rem;
+      box-shadow: 0 4px 32px #6366f122;
+      border: 1.5px solid rgba(99,102,241,0.13);
+      padding: 2.1rem 1.6rem 1.3rem 1.6rem;
+      position: relative;
+      transition: transform 0.16s, box-shadow 0.16s, border 0.16s;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .discussion-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 10px 40px #fbbf2433, 0 2px 0 #06b6d4;
+      border: 1.5px solid #fbbf24;
+      z-index: 3;
     }
     .avatar {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #2cb67d 0%, #7f5af0 100%);
+      background: linear-gradient(135deg, #06b6d4 0%, #a21caf 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      font-size: 1.25rem;
       font-weight: bold;
-      box-shadow: 0 2px 8px rgba(127,90,240,0.10);
+      font-size: 1.1rem;
+      color: #fff;
+      box-shadow: 0 2px 8px #a21caf22;
+      margin-bottom: 0.6rem;
+    }
+    .topic-chip {
+      background: linear-gradient(90deg, #fbbf24 0%, #06b6d4 100%);
+      color: #1e293b;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 999px;
+      padding: 0.3rem 1.1rem;
+      margin-bottom: 0.7rem;
+      display: inline-block;
+      box-shadow: 0 2px 8px #fbbf2422;
+    }
+    .card-content {
+      color: #f1f5f9;
+      font-size: 1.12rem;
+      font-weight: 500;
+      margin-bottom: 1.1rem;
+      min-height: 52px;
+      line-height: 1.5;
+    }
+    .card-actions {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+      margin-top: 0.4rem;
+    }
+    .card-actions button {
+      background: none;
+      border: none;
+      color: #fbbf24;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.14s;
+    }
+    .card-actions button:hover {
+      color: #06b6d4;
+    }
+    .fab {
+      position: fixed;
+      bottom: 2.5rem;
+      right: 2.5rem;
+      z-index: 30;
+      background: linear-gradient(120deg, #fbbf24 0%, #a21caf 100%);
+      color: #fff;
+      font-weight: 700;
+      border: none;
+      border-radius: 50%;
+      width: 64px;
+      height: 64px;
+      font-size: 2rem;
+      box-shadow: 0 8px 32px #a21caf33;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.17s, box-shadow 0.17s;
+    }
+    .fab:hover {
+      background: linear-gradient(120deg, #a21caf 0%, #fbbf24 100%);
+      box-shadow: 0 16px 48px #fbbf2444;
+    }
+    .modal-bg {
+      background: rgba(30,41,59,0.65);
+      backdrop-filter: blur(6px);
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.18s;
+    }
+    .modal {
+      background: #232946;
+      border-radius: 1.4rem;
+      box-shadow: 0 8px 36px #7f5af022;
+      padding: 2.3rem 2rem 2rem 2rem;
+      max-width: 440px;
+      width: 100%;
+      position: relative;
+      animation: modalIn 0.22s cubic-bezier(.6,.05,.28,1.08);
+      color: #f1f5f9;
+    }
+    @keyframes modalIn {
+      from { transform: translateY(30px) scale(0.98); opacity: 0.5; }
+      to { transform: none; opacity: 1; }
+    }
+    .modal-close {
+      position: absolute;
+      right: 1.2rem;
+      top: 1.1rem;
+      color: #fbbf24;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.12s;
+    }
+    .modal-close:hover { opacity: 1; }
+    .emoji-picker {
+      font-size: 1.3rem;
+      cursor: pointer;
+      margin-right: 0.6rem;
+      opacity: 0.85;
+      transition: opacity 0.13s;
+    }
+    .emoji-picker:hover { opacity: 1; }
+    @media (max-width: 900px) {
+      .discussion-grid { grid-template-columns: 1fr; }
+      .fab { right: 1.2rem; bottom: 1.2rem; width: 52px; height: 52px; font-size: 1.3rem;}
+    }
+    @media (max-width: 600px) {
+      .modal { padding: 1.2rem 0.7rem 1.2rem 0.7rem; }
     }
   </style>
 </head>
 <body>
+  <!-- Animated background blobs -->
+  <div class="animated-bg">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+  </div>
 
   <!-- Header -->
-  <header class="flex justify-between items-center p-6">
+  <header class="forum-header flex justify-between items-center px-8 py-5">
     <div class="flex items-center gap-3">
       <i class="fa-solid fa-comments text-2xl text-yellow-400"></i>
       <h1 class="text-2xl font-extrabold tracking-wide gradient-text">Community Forums</h1>
     </div>
-    <a href="dashboard.html" class="flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-white transition">
+    <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg font-semibold text-white transition">
       <i class="fa-solid fa-arrow-left"></i> Dashboard
     </a>
   </header>
 
-  <!-- Main content -->
-  <main class="max-w-3xl mx-auto p-6">
-    <!-- Start Conversation Panel -->
-    <section class="glass mb-10 p-6 shadow-lg">
-      <div class="flex items-center gap-4 mb-6">
-        <i class="fa-solid fa-lightbulb text-yellow-400 text-3xl"></i>
-        <div>
-          <h2 class="text-2xl font-bold gradient-text mb-1">Start a Conversation</h2>
-          <p class="text-white/70 text-base">Have a question, idea, or feedback? Share it with the SkillLink community!</p>
-        </div>
-      </div>
-      <form id="forumForm" class="space-y-4">
-        <div>
-          <label for="username" class="block mb-2 font-semibold text-blue-400">Your Name</label>
-          <input id="username" required class="w-full rounded-lg bg-white/10 border border-white/30 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter your name" />
-        </div>
-        <div>
-          <label for="topic" class="block mb-2 font-semibold text-green-400">Choose Topic</label>
-          <select id="topic" class="w-full rounded-lg bg-white/10 border border-white/30 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400">
-            <option>Python</option>
-            <option>Web Development</option>
-            <option>UI/UX Design</option>
-            <option>Machine Learning</option>
-            <option>Cloud Computing</option>
-            <option>Career & Growth</option>
-            <option>General Discussion</option>
-          </select>
-        </div>
-        <div>
-          <label for="postContent" class="block mb-2 font-semibold text-pink-400">What do you want to share or ask?</label>
-          <textarea id="postContent" rows="3" required class="w-full rounded-lg bg-white/10 border border-white/30 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Type your message, idea, or question..."></textarea>
-        </div>
-        <button type="submit" class="w-full py-3 bg-gradient-to-r from-yellow-400 to-pink-400 hover:from-yellow-500 hover:to-pink-500 text-black font-bold rounded-lg transition">Post to Forum</button>
-      </form>
-    </section>
-
-    <!-- Forum Posts -->
-    <section>
-      <h2 class="text-2xl font-bold mb-4 gradient-text">Latest Community Posts</h2>
-      <div id="postsContainer" class="space-y-6"></div>
-    </section>
+  <!-- Forum Feed -->
+  <main class="max-w-6xl mx-auto px-6 pb-24 relative z-10">
+    <h2 class="text-3xl font-bold mb-10 gradient-text">Latest Discussions</h2>
+    <div id="postsContainer" class="discussion-grid"></div>
   </main>
 
+  <!-- Floating Action Button -->
+  <button class="fab" id="openModalBtn" title="Start a Discussion">
+    <i class="fa-solid fa-plus"></i>
+  </button>
+
+  <!-- Modal (hidden by default) -->
+  <div id="modalBg" class="modal-bg" style="display:none;">
+    <form id="forumForm" class="modal">
+      <button type="button" class="modal-close" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+      <h2 class="text-2xl font-bold mb-4 gradient-text">Start a New Discussion</h2>
+      <div class="mb-4">
+        <label for="username" class="block mb-2 font-semibold text-blue-400">Your Name</label>
+        <input id="username" required class="w-full rounded-lg bg-white/10 border border-white/30 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter your name" autocomplete="off"/>
+      </div>
+      <div class="mb-4">
+        <label for="topic" class="block mb-2 font-semibold text-green-400">Choose Topic</label>
+        <select id="topic" class="w-full rounded-lg bg-white/10 border border-white/30 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400">
+          <option>Python</option>
+          <option>Web Development</option>
+          <option>UI/UX Design</option>
+          <option>Machine Learning</option>
+          <option>Cloud Computing</option>
+          <option>Career & Growth</option>
+          <option>General Discussion</option>
+        </select>
+      </div>
+      <div class="mb-5 flex items-center">
+        <span class="emoji-picker" title="Add emoji" onclick="document.getElementById('postContent').value += '😊'">😊</span>
+        <span class="emoji-picker" title="Add emoji" onclick="document.getElementById('postContent').value += '🚀'">🚀</span>
+        <span class="emoji-picker" title="Add emoji" onclick="document.getElementById('postContent').value += '🤔'">🤔</span>
+        <span class="emoji-picker" title="Add emoji" onclick="document.getElementById('postContent').value += '👏'">👏</span>
+        <textarea id="postContent" rows="2" required class="flex-1 rounded-lg bg-white/10 border border-white/30 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 ml-2" placeholder="Type your message, idea, or question..."></textarea>
+      </div>
+      <button type="submit" class="w-full py-3 bg-gradient-to-r from-yellow-400 to-pink-400 hover:from-yellow-500 hover:to-pink-500 text-black font-bold rounded-lg transition">Post to Forum</button>
+    </form>
+  </div>
+
   <script>
-    // In-memory posts array
     const posts = [
-      { username: "Aisha", topic: "Python", content: "What's the best way to learn Python for data science?" },
-      { username: "Rahul", topic: "Web Development", content: "Share your favorite CSS frameworks and why you love them!" }
+      { username: "Aisha", topic: "Python", content: "What's the best way to learn Python for data science? 😊", likes: 2 },
+      { username: "Rahul", topic: "Web Development", content: "Share your favorite CSS frameworks and why you love them! 🚀", likes: 1 }
     ];
 
     const postsContainer = document.getElementById('postsContainer');
+    const openModalBtn = document.getElementById('openModalBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalBg = document.getElementById('modalBg');
     const forumForm = document.getElementById('forumForm');
 
     function getInitials(name) {
-      return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+      return name.trim().split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
     }
 
     function renderPosts() {
       postsContainer.innerHTML = '';
-      if(posts.length === 0) {
-        postsContainer.innerHTML = '<p class="text-white/60">No posts yet. Start the conversation!</p>';
+      if (posts.length === 0) {
+        postsContainer.innerHTML = '<p class="text-slate-300">No discussions yet. Be the first to start!</p>';
         return;
       }
-      posts.slice().reverse().forEach(post => {
+      posts.slice().reverse().forEach((post, idx) => {
         const postCard = document.createElement('div');
-        postCard.className = 'glass card-hover p-5 rounded-xl border border-white/10 flex items-start gap-4';
+        postCard.className = 'discussion-card';
         postCard.innerHTML = `
           <div class="avatar">${getInitials(post.username)}</div>
-          <div class="flex-1">
-            <div class="flex flex-col sm:flex-row sm:items-center gap-2 mb-1">
-              <span class="font-bold text-lg">${post.username}</span>
-              <span class="px-3 py-1 rounded-full bg-yellow-400/20 text-yellow-300 text-xs font-semibold">${post.topic}</span>
-            </div>
-            <p class="text-white/90 text-base mb-2">${post.content}</p>
-            <div class="flex gap-6 text-sm">
-              <button class="text-blue-400 hover:underline cursor-pointer" onclick="alert('Reply feature coming soon!')">
-                <i class="fa-regular fa-comment"></i> Reply
-              </button>
-              <button class="text-green-400 hover:underline cursor-pointer" onclick="likePost(this)">
-                <i class="fa-regular fa-thumbs-up"></i> Like
-              </button>
-            </div>
+          <div class="topic-chip">${post.topic}</div>
+          <div class="card-content">${post.content}</div>
+          <div class="card-actions">
+            <button class="like-button" data-idx="${posts.length-1-idx}">
+              <i class="fa-regular fa-thumbs-up"></i> <span class="like-count">${post.likes || 0}</span>
+            </button>
+            <button class="reply-button">
+              <i class="fa-regular fa-comment"></i> Reply
+            </button>
           </div>
         `;
         postsContainer.appendChild(postCard);
       });
+
+      document.querySelectorAll('.like-button').forEach(button => {
+        button.addEventListener('click', function() {
+          const idx = +button.getAttribute('data-idx');
+          posts[idx].likes = (posts[idx].likes || 0) + 1;
+          renderPosts();
+        });
+      });
+
+      document.querySelectorAll('.reply-button').forEach((button, i) => {
+        button.addEventListener('click', function() {
+          alert('Reply feature coming soon!');
+        });
+      });
     }
 
-    function likePost(button) {
-      button.disabled = true;
-      button.innerHTML = '<i class="fa-solid fa-thumbs-up"></i> Liked!';
-    }
-    window.likePost = likePost;
+    // Modal logic
+    openModalBtn.onclick = () => { modalBg.style.display = 'flex'; setTimeout(()=>{document.getElementById('username').focus()}, 100)};
+    closeModalBtn.onclick = () => { modalBg.style.display = 'none'; };
+    modalBg.onclick = e => { if(e.target === modalBg) modalBg.style.display = 'none'; };
+    document.addEventListener('keydown', e => {
+      if (e.key === "Escape") modalBg.style.display = 'none';
+    });
 
     forumForm.addEventListener('submit', e => {
       e.preventDefault();
       const username = document.getElementById('username').value.trim() || "Anonymous";
       const topic = document.getElementById('topic').value;
       const content = document.getElementById('postContent').value.trim();
-      if(content) {
-        posts.push({ username, topic, content });
+      if (content) {
+        posts.push({ username, topic, content, likes: 0 });
         renderPosts();
         forumForm.reset();
+        modalBg.style.display = 'none';
       }
     });
 
     renderPosts();
   </script>
-
 </body>
 </html>
