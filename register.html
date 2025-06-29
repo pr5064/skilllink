@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,7 +64,7 @@
 <body>
   <div class="container">
     <h2>Register to SkillLink</h2>
-    <form action="register.php" method="POST">
+    <form id="register-form">
       <input type="text" name="fullname" placeholder="Full Name" required />
       <input type="email" name="email" placeholder="Email Address" required />
       <input type="password" name="password" placeholder="Password" required />
@@ -71,5 +72,32 @@
     </form>
     <p class="alt">Already have an account? <a href="login.html">Login here</a></p>
   </div>
+
+  <!-- Supabase & Script -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabase = supabase.createClient('https://sjjxyilbwudaegowxyrk.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqanh5aWxid3VkYWVnb3d4eXJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0MzkxODIsImV4cCI6MjA1OTAxNTE4Mn0.3woDyWJoUJXXI466XrhME_qPYqQgSH6FZIjHj0ePP8g');
+
+    document.getElementById('register-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const fullname = e.target.fullname.value;
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+
+      const { data, error } = await supabase.auth.signUp({ email, password });
+
+      if (error) {
+        alert('Error: ' + error.message);
+        return;
+      }
+
+      const user = data.user;
+      if (user) {
+        await supabase.from('profiles').insert({ id: user.id, full_name: fullname });
+        alert('Registered successfully! Please check your email to confirm.');
+        window.location.href = 'login.html';
+      }
+    });
+  </script>
 </body>
 </html>
