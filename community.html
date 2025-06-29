@@ -3,28 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SkillLink Community Forums</title>
+  <title>Community Forums | SkillLink</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     body {
       font-family: 'Outfit', sans-serif;
-      background: linear-gradient(120deg, #18122b 0%, #7f5af0 60%, #2cb67d 100%);
+      background: linear-gradient(135deg, #232946 0%, #7f5af0 100%);
       color: #fff;
       min-height: 100vh;
       margin: 0;
     }
     .glass {
-      background: rgba(34, 34, 48, 0.88);
-      backdrop-filter: blur(20px);
-      border: 1.5px solid rgba(127,90,240,0.13);
-      box-shadow: 0 8px 40px 0 rgba(127,90,240,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.10);
-      border-radius: 1.25rem;
-      transition: box-shadow 0.2s, border 0.2s;
+      background: rgba(255,255,255,0.11);
+      backdrop-filter: blur(22px);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      box-shadow: 0 8px 40px 0 rgba(127,90,240,0.15), 0 1.5px 6px 0 rgba(0,0,0,0.09);
+      border-radius: 1rem;
     }
-    .glass-hover:hover {
-      box-shadow: 0 16px 48px 0 rgba(127,90,240,0.25), 0 2px 12px 0 rgba(0,0,0,0.13);
+    .card-hover:hover {
+      transform: translateY(-6px) scale(1.018);
+      box-shadow: 0 16px 48px 0 rgba(127,90,240,0.18), 0 2px 12px 0 rgba(0,0,0,0.11);
       border-color: #7f5af0;
     }
     .gradient-text {
@@ -34,125 +34,81 @@
       font-weight: 800;
     }
     .avatar {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background: linear-gradient(135deg, #2cb67d 0%, #7f5af0 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
-      font-size: 1.22rem;
+      font-size: 1.25rem;
       font-weight: bold;
-      box-shadow: 0 2px 8px rgba(127,90,240,0.14);
-    }
-    .reply-avatar {
-      width: 34px;
-      height: 34px;
-      font-size: 0.95rem;
-    }
-    .reply-box {
-      animation: fadeIn 0.3s;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-    .btn-gradient {
-      background: linear-gradient(90deg, #2cb67d, #7f5af0);
-      color: #fff;
-      border: none;
-      border-radius: 0.75rem;
-      padding: 0.5rem 1.5rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s, box-shadow 0.2s;
-      font-size: 1rem;
-      box-shadow: 0 2px 12px 0 rgba(44,182,125,0.13);
-    }
-    .btn-gradient:hover {
-      background: linear-gradient(90deg, #7f5af0, #2cb67d);
-      box-shadow: 0 4px 20px 0 rgba(127,90,240,0.18);
-    }
-    .tweet-card {
-      border-radius: 1.25rem;
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(127,90,240,0.13);
-      margin-bottom: 1.5rem;
-      transition: box-shadow 0.2s;
-    }
-    .tweet-card:hover {
-      box-shadow: 0 8px 32px 0 rgba(127,90,240,0.16);
-    }
-    @media (max-width: 600px) {
-      .tweet-card, .glass { padding: 1rem !important; }
-      .avatar { width: 36px; height: 36px; font-size: 1rem; }
-      .reply-avatar { width: 28px; height: 28px; font-size: 0.85rem; }
+      box-shadow: 0 2px 8px rgba(127,90,240,0.10);
     }
   </style>
 </head>
 <body>
+
   <!-- Header -->
   <header class="flex justify-between items-center p-6">
     <div class="flex items-center gap-3">
       <i class="fa-solid fa-comments text-2xl text-yellow-400"></i>
-      <h1 class="text-2xl font-extrabold tracking-wide gradient-text">SkillLink Community</h1>
+      <h1 class="text-2xl font-extrabold tracking-wide gradient-text">Community Forums</h1>
     </div>
     <a href="dashboard.html" class="flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-white transition">
       <i class="fa-solid fa-arrow-left"></i> Dashboard
     </a>
   </header>
 
-  <main class="max-w-2xl mx-auto mt-2 p-4">
-    <!-- New Post Form -->
-    <section class="glass mb-10 p-8 shadow-lg">
-      <div class="flex items-center gap-4 mb-3">
-        <i class="fa-solid fa-feather-pointed text-pink-400 text-2xl"></i>
-        <h2 class="text-xl font-bold gradient-text">Start a New Discussion</h2>
+  <!-- Main content -->
+  <main class="max-w-3xl mx-auto p-6">
+    <!-- Start Conversation Panel -->
+    <section class="glass mb-10 p-6 shadow-lg">
+      <div class="flex items-center gap-4 mb-6">
+        <i class="fa-solid fa-lightbulb text-yellow-400 text-3xl"></i>
+        <div>
+          <h2 class="text-2xl font-bold gradient-text mb-1">Start a Conversation</h2>
+          <p class="text-white/70 text-base">Have a question, idea, or feedback? Share it with the SkillLink community!</p>
+        </div>
       </div>
-      <form id="forumForm" class="space-y-3">
-        <div class="flex flex-col sm:flex-row gap-3 items-center">
-          <input id="username" required class="rounded-lg bg-white/10 border border-white/30 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 w-full sm:w-1/3" placeholder="Your name" />
-          <select id="topic" class="rounded-lg bg-white/10 border border-white/30 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 w-full sm:w-1/3">
+      <form id="forumForm" class="space-y-4">
+        <div>
+          <label for="username" class="block mb-2 font-semibold text-blue-400">Your Name</label>
+          <input id="username" required class="w-full rounded-lg bg-white/10 border border-white/30 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter your name" />
+        </div>
+        <div>
+          <label for="topic" class="block mb-2 font-semibold text-green-400">Choose Topic</label>
+          <select id="topic" class="w-full rounded-lg bg-white/10 border border-white/30 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400">
             <option>Python</option>
             <option>Web Development</option>
             <option>UI/UX Design</option>
             <option>Machine Learning</option>
             <option>Cloud Computing</option>
             <option>Career & Growth</option>
-            <option>General</option>
+            <option>General Discussion</option>
           </select>
         </div>
-        <textarea id="postContent" rows="2" required class="w-full rounded-lg bg-white/10 border border-white/30 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Share your idea, question, or update..."></textarea>
-        <button type="submit" class="w-full py-3 btn-gradient">Post</button>
+        <div>
+          <label for="postContent" class="block mb-2 font-semibold text-pink-400">What do you want to share or ask?</label>
+          <textarea id="postContent" rows="3" required class="w-full rounded-lg bg-white/10 border border-white/30 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Type your message, idea, or question..."></textarea>
+        </div>
+        <button type="submit" class="w-full py-3 bg-gradient-to-r from-yellow-400 to-pink-400 hover:from-yellow-500 hover:to-pink-500 text-black font-bold rounded-lg transition">Post to Forum</button>
       </form>
     </section>
 
-    <!-- Posts -->
+    <!-- Forum Posts -->
     <section>
-      <div id="postsContainer"></div>
+      <h2 class="text-2xl font-bold mb-4 gradient-text">Latest Community Posts</h2>
+      <div id="postsContainer" class="space-y-6"></div>
     </section>
   </main>
 
   <script>
     // In-memory posts array
     const posts = [
-      {
-        username: "Aisha",
-        topic: "Python",
-        content: "What's the best way to learn Python for data science?",
-        time: new Date(Date.now() - 3600 * 1000),
-        replies: [
-          { username: "Rahul", content: "Start with pandas and numpy, then try Kaggle!", time: new Date(Date.now() - 1800 * 1000) }
-        ]
-      },
-      {
-        username: "Emily",
-        topic: "Web Development",
-        content: "Share your favorite CSS frameworks and why you love them!",
-        time: new Date(Date.now() - 7200 * 1000),
-        replies: []
-      }
+      { username: "Aisha", topic: "Python", content: "What's the best way to learn Python for data science?" },
+      { username: "Rahul", topic: "Web Development", content: "Share your favorite CSS frameworks and why you love them!" }
     ];
 
     const postsContainer = document.getElementById('postsContainer');
@@ -162,69 +118,31 @@
       return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
     }
 
-    function timeAgo(date) {
-      const now = new Date();
-      const seconds = Math.floor((now - date) / 1000);
-      if (seconds < 60) return `${seconds}s ago`;
-      const minutes = Math.floor(seconds / 60);
-      if (minutes < 60) return `${minutes}m ago`;
-      const hours = Math.floor(minutes / 60);
-      if (hours < 24) return `${hours}h ago`;
-      const days = Math.floor(hours / 24);
-      return `${days}d ago`;
-    }
-
     function renderPosts() {
       postsContainer.innerHTML = '';
       if(posts.length === 0) {
         postsContainer.innerHTML = '<p class="text-white/60">No posts yet. Start the conversation!</p>';
         return;
       }
-      posts.slice().reverse().forEach((post, idx) => {
+      posts.slice().reverse().forEach(post => {
         const postCard = document.createElement('div');
-        postCard.className = 'tweet-card glass-hover p-6 flex flex-col gap-2';
+        postCard.className = 'glass card-hover p-5 rounded-xl border border-white/10 flex items-start gap-4';
         postCard.innerHTML = `
-          <div class="flex gap-3 items-center mb-1">
-            <div class="avatar">${getInitials(post.username)}</div>
-            <div>
-              <div class="flex gap-2 items-center">
-                <span class="font-bold text-base">${post.username}</span>
-                <span class="px-2 py-1 rounded-full bg-yellow-400/20 text-yellow-300 text-xs font-semibold">${post.topic}</span>
-                <span class="text-xs text-white/50">${timeAgo(new Date(post.time))}</span>
-              </div>
+          <div class="avatar">${getInitials(post.username)}</div>
+          <div class="flex-1">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 mb-1">
+              <span class="font-bold text-lg">${post.username}</span>
+              <span class="px-3 py-1 rounded-full bg-yellow-400/20 text-yellow-300 text-xs font-semibold">${post.topic}</span>
             </div>
-          </div>
-          <div class="mb-2 text-white/90 text-base">${post.content}</div>
-          <div class="flex gap-4 text-sm mb-1">
-            <button class="text-blue-400 hover:underline cursor-pointer" onclick="window.toggleReplyBox(${posts.length-1-idx})">
-              <i class="fa-regular fa-comment"></i> Reply
-            </button>
-            <button class="text-green-400 hover:underline cursor-pointer" onclick="window.likePost(this)">
-              <i class="fa-regular fa-thumbs-up"></i> Like
-            </button>
-          </div>
-          <div id="replyBox${posts.length-1-idx}" class="hidden reply-box mt-2">
-            <form onsubmit="return window.submitReply(event, ${posts.length-1-idx})">
-              <div class="flex gap-2 mb-2">
-                <input required class="reply-input flex-1" placeholder="Your name"/>
-                <button type="submit" class="btn-gradient">Reply</button>
-              </div>
-              <textarea required class="reply-input w-full" rows="1" placeholder="Write a reply..."></textarea>
-            </form>
-          </div>
-          <div class="pl-8 mt-2 space-y-2">
-            ${post.replies.map(reply => `
-              <div class="flex gap-2 items-start">
-                <div class="avatar reply-avatar">${getInitials(reply.username)}</div>
-                <div>
-                  <div class="flex gap-2 items-center">
-                    <span class="font-semibold text-sm">${reply.username}</span>
-                    <span class="text-xs text-white/50">${timeAgo(new Date(reply.time))}</span>
-                  </div>
-                  <div class="text-white/90 text-sm">${reply.content}</div>
-                </div>
-              </div>
-            `).join('')}
+            <p class="text-white/90 text-base mb-2">${post.content}</p>
+            <div class="flex gap-6 text-sm">
+              <button class="text-blue-400 hover:underline cursor-pointer" onclick="alert('Reply feature coming soon!')">
+                <i class="fa-regular fa-comment"></i> Reply
+              </button>
+              <button class="text-green-400 hover:underline cursor-pointer" onclick="likePost(this)">
+                <i class="fa-regular fa-thumbs-up"></i> Like
+              </button>
+            </div>
           </div>
         `;
         postsContainer.appendChild(postCard);
@@ -237,32 +155,13 @@
     }
     window.likePost = likePost;
 
-    function toggleReplyBox(idx) {
-      const box = document.getElementById('replyBox'+idx);
-      if (box) box.classList.toggle('hidden');
-    }
-    window.toggleReplyBox = toggleReplyBox;
-
-    function submitReply(e, idx) {
-      e.preventDefault();
-      const form = e.target;
-      const name = form.querySelector('input').value.trim() || "Anonymous";
-      const content = form.querySelector('textarea').value.trim();
-      if(content) {
-        posts[idx].replies.push({ username: name, content, time: new Date() });
-        renderPosts();
-      }
-      return false;
-    }
-    window.submitReply = submitReply;
-
     forumForm.addEventListener('submit', e => {
       e.preventDefault();
       const username = document.getElementById('username').value.trim() || "Anonymous";
       const topic = document.getElementById('topic').value;
       const content = document.getElementById('postContent').value.trim();
       if(content) {
-        posts.push({ username, topic, content, time: new Date(), replies: [] });
+        posts.push({ username, topic, content });
         renderPosts();
         forumForm.reset();
       }
@@ -270,5 +169,6 @@
 
     renderPosts();
   </script>
+
 </body>
 </html>
