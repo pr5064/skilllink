@@ -1,3 +1,4 @@
 // config.js
 export const SUPABASE_URL = 'https://sjjxyilbwudaegowxyrk.supabase.co';
 export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqanh5aWxid3VkYWVnb3d4eXJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0MzkxODIsImV4cCI6MjA1OTAxNTE4Mn0.3woDyWJoUJXXI466XrhME_qPYqQgSH6FZIjHj0ePP8g';
+export const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
